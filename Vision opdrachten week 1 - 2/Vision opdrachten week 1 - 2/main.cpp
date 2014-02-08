@@ -2,15 +2,13 @@
 #include <tchar.h>
 #include <iostream>
 #include <sstream>
-#include "corona.h"
 #include "Image.h"
 
-void stop(std::string msg); //forward declare the function
+void stop(std::string msg); //forward declare this function.
 
 int main(int argc, char* argv[])
 {
 	std::string filename, yesOrNo, grayOrColor;
-	corona::Image* inputImage;
 	Image image;
 
 	//check argv[1] for input, if not, ask for input.
@@ -33,19 +31,14 @@ int main(int argc, char* argv[])
 		stop("Not using this file..");
 	}
 
-	//Open the image using Corona lib
-	inputImage = corona::OpenImage(filename.c_str(), corona::PF_R8G8B8A8);
-	if (!inputImage) {
+	image = Image(filename); //since we are allowed to only use a lib for loading images, lets copy its data in our own class, with which we can have some fun.
+
+	if (!image.Excists()) {
 		stop("Image could not be loaded");
 	} 
 	else
 	{
-		int width  = inputImage->getWidth();
-		int height = inputImage->getHeight();
-		void* pixels = inputImage->getPixels();
-
-		image = Image(width, height, pixels); //since we are allowed to only use a lib for loading images, lets copy its data in our own class, with which we can have some fun
-		std::cout << "Loaded an " << width << " x " << height << " (wxh) image." << std::endl;
+		std::cout << "Loaded an " << image.getWidth() << " x " << image.getHeight() << " (wxh) image." << std::endl;
 	}
 
 	std::cout << "Do you want to convert the image to grayscale(g) or seperate color channels?(c) (g/c)" << std::endl;

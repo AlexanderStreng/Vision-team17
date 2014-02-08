@@ -1,16 +1,22 @@
 #pragma once
-
+#include <string>
+#include "corona.h"
 
 class Image
 {
 	private:
 		typedef unsigned char byte;
-		int _width;
-		int _height;
+		int width;
+		int height;
+		std::string _filename;
 	public:
 		Image::Image();
-		Image(int width, int height, void* pixels);
-		void setPixels(void* pixels);
+		Image(std::string filename);
+		bool Excists();
+		int getWidth();
+		int getHeight();
+		bool Image::saveToFile(std::string filename);
+		void convertToGrayScale();
 		~Image(void);
 };
 
