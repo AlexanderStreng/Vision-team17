@@ -6,6 +6,9 @@
 *.user
 *.sln.docstates
 
+#Test-Images
+[Ii]mages/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
