@@ -1,14 +1,9 @@
-﻿Build started 2/1/2014 9:20:18 PM.
-     1>Project "C:\Users\arno\Documents\Visual Studio 2013\Projects\Timer\LibTimer\LibTimer.vcxproj" on node 3 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Timer\exectimer.cpp
-         exectimer.cpp
-       Lib:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"C:\Users\arno\Documents\Visual Studio 2013\Projects\Timer\Debug\LibTimerd.lib" /NOLOGO Debug\basetimer.obj
-         Debug\exectimer.obj
-         LibTimer.vcxproj -> C:\Users\arno\Documents\Visual Studio 2013\Projects\Timer\Debug\LibTimerd.lib
-     1>Done Building Project "C:\Users\arno\Documents\Visual Studio 2013\Projects\Timer\LibTimer\LibTimer.vcxproj" (Build target(s)).
+﻿Build started 2/7/2014 12:02:15 AM.
+     1>Project "E:\School\Projects\vision-timer\Timer\LibTimer\LibTimer.vcxproj" on node 4 (Build target(s)).
+       Project file contains ToolsVersion="12.0". This toolset may be unknown or missing, in which case you may be able to resolve this by installing the appropriate version of MSBuild, or the build may have been forced to a particular ToolsVersion for policy reasons. Treating the project as if it had ToolsVersion="4.0". For more information, please see http://go.microsoft.com/fwlink/?LinkId=291333.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V110\Microsoft.Cpp.Platform.targets(44,5): error MSB8020: The builds tools for v120 (Platform Toolset = 'v120') cannot be found. To build using the v120 build tools, either click the Project menu or right-click the solution, and then select "Update VC++ Projects...". Install v120 to build using the v120 build tools.
+     1>Done Building Project "E:\School\Projects\vision-timer\Timer\LibTimer\LibTimer.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:01.25
+Time Elapsed 00:00:00.02
