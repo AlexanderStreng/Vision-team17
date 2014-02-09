@@ -51,6 +51,9 @@ TestResult.xml
 *.pidb
 *.svclog
 *.scc
+*.jpg
+*.bmp
+*.png
 
 # Chutzpah Test files
 _Chutzpah*

@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <tchar.h>
 #include <iostream>
-#include <sstream>
 #include "Image.h"
 
 void stop(std::string msg); //forward declare this function.
@@ -9,7 +6,7 @@ void stop(std::string msg); //forward declare this function.
 int main(int argc, char* argv[])
 {
 	std::string filename, yesOrNo, grayOrColor;
-	Image image;
+	Image originalImage;
 
 	//check argv[1] for input, if not, ask for input.
 	if(argc < 2)
@@ -31,14 +28,14 @@ int main(int argc, char* argv[])
 		stop("Not using this file..");
 	}
 
-	image = Image(filename); //since we are allowed to only use a lib for loading images, lets copy its data in our own class, with which we can have some fun.
+	originalImage = Image(filename); //since we are allowed to only use a lib for loading images, lets open in our own class, with which we can have some fun.
 
-	if (!image.Excists()) {
+	if (!originalImage.Excists()) {
 		stop("Image could not be loaded");
 	} 
 	else
 	{
-		std::cout << "Loaded an " << image.getWidth() << " x " << image.getHeight() << " (wxh) image." << std::endl;
+		std::cout << "Loaded img:" << originalImage.getFileNameWithoutExtension() << " dimensions(wxh):"  << originalImage.getWidth() << " x " << originalImage.getHeight() << "." << std::endl;
 	}
 
 	std::cout << "Do you want to convert the image to grayscale(g) or seperate color channels?(c) (g/c)" << std::endl;
@@ -47,6 +44,19 @@ int main(int argc, char* argv[])
 	if(grayOrColor == "g") 
 	{
 		std::cout << "Converting the image to grayscale." << std::endl;
+		Image grayScaleImage = Image(originalImage);
+		grayScaleImage.convertToGrayScale();
+
+		std::stringstream ss;
+		ss << "grey_" <<grayScaleImage.getFileNameWithoutExtension() << ".png"; // save as bmp
+		if(grayScaleImage.saveToFile(ss.str(), Image::GREYSCALE))
+		{
+			stop("Saving image succeeded.");
+		}
+		else 
+		{
+			stop("Saving image failed.");
+		}
 	}
 	else if(grayOrColor == "c")
 	{
