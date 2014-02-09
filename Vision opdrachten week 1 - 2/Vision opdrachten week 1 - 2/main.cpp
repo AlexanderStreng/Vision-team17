@@ -1,17 +1,21 @@
 #include <iostream>
 #include "Image.h"
 
+std::string filename, yesOrNo;
+Image originalImage;
+
 void stop(std::string msg); //forward declare this function.
+
+void grayScaleRoutine(); //Preventing clutter in main function
+void colorRoutine();
+void invertRoutine();
 
 int main(int argc, char* argv[])
 {
-	std::string filename, yesOrNo, grayOrColor;
-	Image originalImage;
-
 	//check argv[1] for input, if not, ask for input.
 	if(argc < 2)
 	{
-		std::cout << "No command line arguments found. Could you please insert the filename now? " << std::endl;
+		std::cout << std::endl << "No filename found. Could you please insert the filename? " << std::endl;
 		getline(std::cin, filename);
 	} 
 	else
@@ -20,57 +24,96 @@ int main(int argc, char* argv[])
 		filename = argv[1];
 	}
 
-	std::cout << "I am going to use the file: '" << filename << "' is this correct?(y/n)" << std::endl;
-	getline(std::cin, yesOrNo);
-
-	if(yesOrNo != "y" && yesOrNo != "yes") //Trying to keep this simple. If no other input then y(es) is given, lets just quit.
-	{
-		stop("Not using this file..");
-	}
-
-	originalImage = Image(filename); //since we are allowed to only use a lib for loading images, lets open in our own class, with which we can have some fun.
+	std::cout << "I am going to use the file: '" << filename << "'" << std::endl;
+	originalImage = Image(filename);
 
 	if (!originalImage.Excists()) {
 		stop("Image could not be loaded");
 	} 
-	else
+
+	std::cout << "Loaded img:" << originalImage.getFileNameWithoutExtension() << " dimensions(WxH):"  << originalImage.getWidth() << " x " << originalImage.getHeight() << "." << std::endl;
+
+	grayScaleRoutine();
+	colorRoutine();
+	invertRoutine();
+
+	stop("");
+}
+
+void grayScaleRoutine()
+{
+	std::cout << "Converting the image to grayscale." << std::endl;
+	Image grayScaleImage = Image(filename);
+	grayScaleImage.convertToColor(Image::GRAYSCALE);
+	std::stringstream ss;
+	ss << "grey_" <<grayScaleImage.getFileNameWithoutExtension() << ".png"; // save as png
+
+	if(grayScaleImage.saveToFile(ss.str()))
 	{
-		std::cout << "Loaded img:" << originalImage.getFileNameWithoutExtension() << " dimensions(wxh):"  << originalImage.getWidth() << " x " << originalImage.getHeight() << "." << std::endl;
+		std::cout<< "Saving image succeeded." << std::endl;
+		// create 2 bins (10 - 256)
+	}
+	else 
+	{
+		stop("Saving image failed.");
+	}
+}
+
+void invertRoutine()
+{
+	std::cout << "Inverting image colors." << std::endl;
+	Image invertedImage = Image(filename);
+	invertedImage.convertToColor(Image::INVERTED);
+	std::stringstream ss;
+	ss << "inverted_" <<invertedImage.getFileNameWithoutExtension() << ".png"; // save as png
+
+	if(invertedImage.saveToFile(ss.str()))
+	{
+		std::cout<< "Saving image succeeded." << std::endl;
+	}
+	else 
+	{
+		stop("Saving image failed.");
+	}
+}
+
+void colorRoutine()
+{
+	std::stringstream ss;
+
+	std::cout << "Converting the image to R(ed) color channel." << std::endl;
+	Image redImage = Image(filename);
+	redImage.convertToColor(Image::RED);
+	ss << "R_" << redImage.getFileNameWithoutExtension() << ".png"; // save as png
+	if(redImage.saveToFile(ss.str()))
+	{
+		std::cout<< "Saving RedChannelImage image succeeded." << std::endl;
 	}
 
-	std::cout << "Do you want to convert the image to grayscale(g) or seperate color channels?(c) (g/c)" << std::endl;
-	getline(std::cin, grayOrColor);
-
-	if(grayOrColor == "g") 
+	std::cout << "Converting the image to G(reen) color channel." << std::endl;
+	Image greenImage = Image(filename);
+	greenImage.convertToColor(Image::GREEN);
+	ss.str("");
+	ss << "G_" << greenImage.getFileNameWithoutExtension() << ".png"; // save as png
+	if(greenImage.saveToFile(ss.str()))
 	{
-		std::cout << "Converting the image to grayscale." << std::endl;
-		Image grayScaleImage = Image(originalImage);
-		grayScaleImage.convertToGrayScale();
-
-		std::stringstream ss;
-		ss << "grey_" <<grayScaleImage.getFileNameWithoutExtension() << ".png"; // save as bmp
-		if(grayScaleImage.saveToFile(ss.str(), Image::GREYSCALE))
-		{
-			stop("Saving image succeeded.");
-		}
-		else 
-		{
-			stop("Saving image failed.");
-		}
+		std::cout<< "Saving image succeeded." << std::endl;
 	}
-	else if(grayOrColor == "c")
+
+	std::cout << "Converting the image to B(lue) color channel." << std::endl;
+	Image blueImage = Image(filename);
+	blueImage.convertToColor(Image::BLUE);
+	ss.str("");
+	ss << "B_" << blueImage.getFileNameWithoutExtension() << ".png"; // save as png
+	if(blueImage.saveToFile(ss.str()))
 	{
-		std::cout << "Converting the image to R(ed) G(reen) and B(lue) color channels." << std::endl;
-	}
-	else
-	{
-		stop("No suitable input found. Please use 'g' for grayscale, and 'c' for color channels next time.");
+		std::cout<< "Saving image succeeded." << std::endl;
 	}
 }
 
 void stop(std::string msg)
 {
-	std::cout << msg << std::endl << "Press any key to stop.." << std::endl;
+	std::cout << msg << std::endl << "Press enter to stop.." << std::endl;
 	std::cin.get();
 	exit(0);
 }

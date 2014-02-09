@@ -3,7 +3,6 @@
 #include <vector>
 #include <sstream>
 #include "corona.h"
-#include <windows.h>
 
 class Image
 {
@@ -17,7 +16,8 @@ class Image
 			byte r, g, b, a;
 		};
 
-		enum OutputColorEnum { GREYSCALE, COLOR, RED, GREEN, BLUE };
+		enum OutputColorEnum { GRAYSCALE, RED, GREEN, BLUE, INVERTED };
+
 		Image::Image();
 		Image(std::string filename);
 		bool Excists();
@@ -26,8 +26,8 @@ class Image
 		void* pixels;
 		std::string getFileName();
 		std::string getFileNameWithoutExtension();
-		bool Image::saveToFile(std::string filename, OutputColorEnum color);
-		void convertToGrayScale();
+		bool Image::saveToFile(std::string filename);
+		void convertToColor(OutputColorEnum color);
 		~Image(void);
 
 	private:
@@ -40,7 +40,7 @@ class Image
 		Pixel* _imageData;
 
 		//bitmap file headers
-		typedef struct bitmapFileHeader
+		/*typedef struct bitmapFileHeader
 		{
 			unsigned short int bfType;  // I think 0x4d42 goes here (otherwise known as the string 'BM')			  
 			unsigned int bfSize;  // put sizeof(BITMAPFILEHEADER) here					 
@@ -59,7 +59,7 @@ class Image
 		   int biXPelsPerMeter, biYPelsPerMeter; // Put anything here	
 		   unsigned int biClrUsed; // For 24-bit, ignore these	 
 		   unsigned int biClrImportant; // Same
-		} BITMAPINFOHEADER;
+		} BITMAPINFOHEADER;*/
 
 };
 

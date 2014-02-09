@@ -10,7 +10,7 @@ Image::Image(std::string filename) :
 	_width  = _inputImage->getWidth();
 	_height = _inputImage->getHeight();
 
-	//allocate array
+	//allocate pixel buffer
 	_imageData = new Pixel[_width * _height];
 
 	pixels = _inputImage->getPixels();
@@ -28,14 +28,12 @@ Image::Image(std::string filename) :
 
 Image::~Image()
 {
-	//delete _imageData; <- we should still do this
+	delete &pixels;
 }
 
-bool Image::saveToFile(std::string filename, OutputColorEnum color)
+bool Image::saveToFile(std::string filename)
 {
-	byte* data = new byte[_width * _height * 3];
-	//byte* data1 = new byte[_width * _height * 3];
-
+	byte* data = new byte[_width * _height * 3]; //3 bytes per pixel
 	for (int i = 0; i < _width * _height; ++i) 
 	{
 		data[i * 3] = _imageData[i].r;
@@ -43,9 +41,10 @@ bool Image::saveToFile(std::string filename, OutputColorEnum color)
 		data[(i * 3) + 2] = _imageData[i].b;
 	}
 
-	//data1 = (byte*)pixels;
-
 	corona::Image* saveImage = corona::CreateImage(_width, _height, corona::PF_R8G8B8, data);
+
+	//delete [] data; //free up them mems
+
 	return corona::SaveImage(filename.c_str(), corona::FF_PNG, saveImage);
 
 	/*
@@ -102,9 +101,52 @@ bool Image::saveToFile(std::string filename, OutputColorEnum color)
 	return true; */
 }
 
-void Image::convertToGrayScale()
+void Image::convertToColor(OutputColorEnum color)
 {
-	//nothing yet
+	switch(color)
+	{
+		case GRAYSCALE:
+				for (int i = 0; i < _width * _height; ++i) 
+				{
+					int val = ((int)_imageData[i].r + (int)_imageData[i].g + (int)_imageData[i].b) / 3;
+					_imageData[i].r = (byte)val;
+					_imageData[i].g = (byte)val;
+					_imageData[i].b = (byte)val;
+				}
+			break;
+
+		case RED:
+				for (int i = 0; i < _width * _height; ++i) 
+				{
+					_imageData[i].g = (byte)0; //color em black? or white? what is best?
+					_imageData[i].b = (byte)0;
+				}
+			break;
+
+		case GREEN:
+				for (int i = 0; i < _width * _height; ++i) 
+				{
+					_imageData[i].r = (byte)0; //color em black? or white? what is best?
+					_imageData[i].b = (byte)0;
+				}
+			break;
+
+		case BLUE:
+				for (int i = 0; i < _width * _height; ++i) 
+				{
+					_imageData[i].g = (byte)0; //color em black? or white? what is best?
+					_imageData[i].r = (byte)0;
+				}
+			break;
+		case INVERTED:
+				for (int i = 0; i < _width * _height; ++i) 
+				{
+					_imageData[i].r = (byte)(255 - (int)_imageData[i].r);
+					_imageData[i].g = (byte)(255 - (int)_imageData[i].g);
+					_imageData[i].b = (byte)(255 - (int)_imageData[i].b);
+				}
+			break;
+	}
 }
 
 bool Image::Excists()
@@ -129,9 +171,7 @@ std::string Image::getFileNameWithoutExtension()
 {
 	std::stringstream ss(_filename);
 	std::string item;
-
 	std::getline(ss, item, '.');
-
 	return item;
 }
 
