@@ -5,11 +5,10 @@
 #include <fstream>
 #include "corona.h"
 
-class Image
-{
+typedef unsigned char byte;
 
+class Image {
 public:
-	typedef unsigned char byte;
 	struct Pixel
 	{
 		Pixel(){}
@@ -24,7 +23,6 @@ public:
 	int getHeight();
 	int bins;
 	int* histogramBins;
-	void* pixels;
 	std::string getFileName();
 	std::string getFileNameWithoutExtension();
 	bool Image::saveToFile(std::string filename);
@@ -32,15 +30,14 @@ public:
 	bool saveHistogramAsCSV(int bins, std::string color);
 	bool EqualizeImage(int bins);
 	bool calculateBins(int bins, OutputColorEnum color);
-	~Image(void);
-
+	~Image();
+	Image::Image(const Image& image);
 private:
 	int imageWidth;
 	int imageHeight;
 	corona::Image* inputImage;
 	std::string filename;
-
-	Pixel* imageData; //our pixels in memory
+	Pixel* imageData; //our pixels stored in memory
 
 	//bitmap file headers
 	/*typedef struct bitmapFileHeader

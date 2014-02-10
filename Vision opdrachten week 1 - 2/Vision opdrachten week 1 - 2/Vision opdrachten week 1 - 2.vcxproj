@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\Include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Include\;..\..\Timer\Timer\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -81,12 +81,16 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Image.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClInclude Include="include\basetimer.h" />
+    <ClInclude Include="Include\corona.h" />
+    <ClInclude Include="include\exectimer.h" />
+    <ClInclude Include="include\Image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Image.h" />
-    <ClInclude Include="Include\corona.h" />
+    <ClCompile Include="src\basetimer.cpp" />
+    <ClCompile Include="src\exectimer.cpp" />
+    <ClCompile Include="src\Image.cpp" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
