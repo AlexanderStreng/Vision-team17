@@ -152,21 +152,30 @@ void Image::convertToColor(OutputColorEnum color)
 	}
 }
 
-bool Image::calculateGrayBins(int bins) //presuming this is a grayscale image!
+bool Image::calculateBins(int bins, OutputColorEnum color) //presuming this is a grayscale image!
 {	
 	histogramBins = new int[bins](); //allocate new spees -> might be messy tho. 
 
 	for (int i = 0; i < imageWidth * imageHeight; ++i) 
 	{
-		int r = imageData[i].r; 
-		int g = imageData[i].g; 
-		int b = imageData[i].b;
-
-		int intensity = (int)((r+g+b) / 3);
-		int val = floor((((intensity * bins)) / 256) + 0.5); //floor+0.5 for proper rounding
-		histogramBins[val]++;
+		int val = 0;
+		switch(color)
+		{
+			case RED:
+				val = (int)imageData[i].r; 
+				break;
+			case GREEN:
+				val = (int)imageData[i].g;
+				break;
+			case BLUE:
+				val = (int)imageData[i].b;
+				break;
+			case GRAYSCALE:
+				val = (int)(imageData[i].r + imageData[i].g + imageData[i].b) / 3;
+				break;
+		}
+		histogramBins[(int)(floor(((val * bins) / 256) + 0.5))]++;//floor+0.5 for proper rounding
 	}
-
 	return true;
 }
 
@@ -189,7 +198,7 @@ bool Image::EqualizeImage(int bins)
 	//now reassign all pixelss
 	for (int i = 0; i < imageSize; i++) 
 	{ 
-		int newValue = lookupHistogram[(int)imageData[i].r];
+		int newValue = lookupHistogram[(int)imageData[i].r];//doesnt really matter which value we get(rgb), they should be the same.
 		if (newValue > 255) 
 		{ 
 			imageData[i].r = imageData[i].g = imageData[i].b = (int)(255); 

@@ -7,9 +7,9 @@
 
 class Image
 {
+
 public:
 	typedef unsigned char byte;
-
 	struct Pixel
 	{
 		Pixel(){}
@@ -17,7 +17,6 @@ public:
 		byte r, g, b, a;
 	}; //alpha might come in handy later
 	enum OutputColorEnum { GRAYSCALE, RED, GREEN, BLUE, INVERTED };
-
 	Image::Image();
 	Image(std::string filename);
 	bool Exists();
@@ -32,10 +31,10 @@ public:
 	void convertToColor(OutputColorEnum color);
 	bool saveHistogramAsCSV(int bins, std::string color);
 	bool EqualizeImage(int bins);
-	bool calculateGrayBins(int bins);
+	bool calculateBins(int bins, OutputColorEnum color);
 	~Image(void);
-private:
 
+private:
 	int imageWidth;
 	int imageHeight;
 	corona::Image* inputImage;

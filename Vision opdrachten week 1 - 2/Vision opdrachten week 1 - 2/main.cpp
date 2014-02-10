@@ -55,12 +55,12 @@ void grayScaleRoutine()
 	{
 		std::cout<< "Saving image succeeded." << std::endl;
 
-		if(grayScaleImage.calculateGrayBins(10)){
+		if(grayScaleImage.calculateBins(10, Image::GRAYSCALE)){
 			grayScaleImage.saveHistogramAsCSV(10, "Grayscale");
 			std::cout<< "Saving grayscale image-histogram(10) succeeded." << std::endl;
 		}
 
-		if(grayScaleImage.calculateGrayBins(256)){
+		if(grayScaleImage.calculateBins(256, Image::GRAYSCALE)){
 
 			grayScaleImage.saveHistogramAsCSV(256, "Grayscale");
 			std::cout<< "Saving grayscale image-histogram(256) succeeded." << std::endl << "Equalizing image.." << std::endl;
@@ -80,77 +80,77 @@ void grayScaleRoutine()
 	}
 }
 
-	void invertRoutine()
-	{
-		std::cout << "Inverting image colors." << std::endl;
-		Image invertedImage = Image(filename);
-		invertedImage.convertToColor(Image::INVERTED);
-		std::stringstream ss;
-		ss << "inverted_" <<invertedImage.getFileNameWithoutExtension() << ".png"; // save as png
+void invertRoutine()
+{
+	std::cout << "Inverting image colors." << std::endl;
+	Image invertedImage = Image(filename);
+	invertedImage.convertToColor(Image::INVERTED);
+	std::stringstream ss;
+	ss << "inverted_" <<invertedImage.getFileNameWithoutExtension() << ".png"; // save as png
 
-		if(invertedImage.saveToFile(ss.str()))
+	if(invertedImage.saveToFile(ss.str()))
+	{
+		std::cout<< "Saving image succeeded." << std::endl;
+	}
+	else 
+	{
+		stop("Saving image failed.");
+	}
+}
+
+void colorRoutine()
+{
+	std::stringstream ss;
+
+	std::cout << "Converting the image to R(ed) color channel." << std::endl;
+	Image redImage = Image(filename);
+	redImage.convertToColor(Image::RED);
+	ss << "R_" << redImage.getFileNameWithoutExtension() << ".png"; // save as png
+	if(redImage.saveToFile(ss.str()))
+	{
+		std::cout<< "Saving image image succeeded." << std::endl;
+
+		if(redImage.calculateBins(10, Image::RED))
 		{
-			std::cout<< "Saving image succeeded." << std::endl;
-		}
-		else 
-		{
-			stop("Saving image failed.");
+			redImage.saveHistogramAsCSV(10, "Red");
+			std::cout<< "Saving red image-histogram(10) succeeded." << std::endl;
 		}
 	}
 
-	void colorRoutine()
+	std::cout << "Converting the image to G(reen) color channel." << std::endl;
+	Image greenImage = Image(filename);
+	greenImage.convertToColor(Image::GREEN);
+	ss.str("");
+	ss << "G_" << greenImage.getFileNameWithoutExtension() << ".png"; // save as png
+	if(greenImage.saveToFile(ss.str()))
 	{
-		std::stringstream ss;
-
-		std::cout << "Converting the image to R(ed) color channel." << std::endl;
-		Image redImage = Image(filename);
-		redImage.convertToColor(Image::RED);
-		ss << "R_" << redImage.getFileNameWithoutExtension() << ".png"; // save as png
-		if(redImage.saveToFile(ss.str()))
+		std::cout<< "Saving image succeeded." << std::endl;
+		if(greenImage.calculateBins(10, Image::GREEN))
 		{
-			std::cout<< "Saving image image succeeded." << std::endl;
-
-			if(redImage.calculateGrayBins(10))
-			{
-				redImage.saveHistogramAsCSV(10, "Red");
-				std::cout<< "Saving red image-histogram(10) succeeded." << std::endl;
-			}
-		}
-
-		std::cout << "Converting the image to G(reen) color channel." << std::endl;
-		Image greenImage = Image(filename);
-		greenImage.convertToColor(Image::GREEN);
-		ss.str("");
-		ss << "G_" << greenImage.getFileNameWithoutExtension() << ".png"; // save as png
-		if(greenImage.saveToFile(ss.str()))
-		{
-			std::cout<< "Saving image succeeded." << std::endl;
-			if(greenImage.calculateGrayBins(10))
-			{
-				greenImage.saveHistogramAsCSV(10, "Green");
-				std::cout<< "Saving green image-histogram(10) succeeded." << std::endl;
-			}
-		}
-
-		std::cout << "Converting the image to B(lue) color channel." << std::endl;
-		Image blueImage = Image(filename);
-		blueImage.convertToColor(Image::BLUE);
-		ss.str("");
-		ss << "B_" << blueImage.getFileNameWithoutExtension() << ".png"; // save as png
-		if(blueImage.saveToFile(ss.str()))
-		{
-			std::cout<< "Saving image succeeded." << std::endl;
-			if(blueImage.calculateGrayBins(10))
-			{
-				blueImage.saveHistogramAsCSV(10, "Blue");
-				std::cout<< "Saving green image-histogram(10) succeeded." << std::endl;
-			}
+			greenImage.saveHistogramAsCSV(10, "Green");
+			std::cout<< "Saving green image-histogram(10) succeeded." << std::endl;
 		}
 	}
 
-	void stop(std::string msg)
+	std::cout << "Converting the image to B(lue) color channel." << std::endl;
+	Image blueImage = Image(filename);
+	blueImage.convertToColor(Image::BLUE);
+	ss.str("");
+	ss << "B_" << blueImage.getFileNameWithoutExtension() << ".png"; // save as png
+	if(blueImage.saveToFile(ss.str()))
 	{
-		std::cout << msg << std::endl << "Press enter to stop.." << std::endl;
-		std::cin.get();
-		exit(0);
+		std::cout<< "Saving image succeeded." << std::endl;
+		if(blueImage.calculateBins(10, Image::BLUE))
+		{
+			blueImage.saveHistogramAsCSV(10, "Blue");
+			std::cout<< "Saving green image-histogram(10) succeeded." << std::endl;
+		}
 	}
+}
+
+void stop(std::string msg)
+{
+	std::cout << msg << std::endl << "Press enter to stop.." << std::endl;
+	std::cin.get();
+	exit(0);
+}
