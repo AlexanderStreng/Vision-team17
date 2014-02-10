@@ -14,13 +14,13 @@ class Image
 			Pixel(){}
 			Pixel(byte r, byte g, byte b, byte a) : r(r), g(g), b(b), a(a){}
 			byte r, g, b, a;
-		};
+		}; //alpha might come in handy later
 
 		enum OutputColorEnum { GRAYSCALE, RED, GREEN, BLUE, INVERTED };
 
 		Image::Image();
 		Image(std::string filename);
-		bool Excists();
+		bool Exists();
 		int getWidth();
 		int getHeight();
 		void* pixels;
@@ -28,11 +28,11 @@ class Image
 		std::string getFileNameWithoutExtension();
 		bool Image::saveToFile(std::string filename);
 		void convertToColor(OutputColorEnum color);
+		Image::Pixel* getPixels();
 		~Image(void);
-
 	private:
 
-		int _width;
+		int _width; // '_' are reserved. Need to remove these in the furtieere
 		int _height;
 		corona::Image* _inputImage;
 		std::string _filename;

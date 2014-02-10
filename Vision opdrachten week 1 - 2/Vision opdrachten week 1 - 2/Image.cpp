@@ -1,5 +1,8 @@
 #include "Image.h"
 
+//still need to write copy constrctr ( might improve performance over reading the complete image again and again )
+//assignmentoperator - Rule of three?
+
 Image::Image(){};
 
 Image::Image(std::string filename) :
@@ -28,7 +31,13 @@ Image::Image(std::string filename) :
 
 Image::~Image()
 {
-	delete &pixels;
+	//delete &pixels;
+	//delete [] _imageData;
+}
+
+Image::Pixel* Image::getPixels()
+{
+	return _imageData; //loler. Not to keen on returning pointers. Error phrone
 }
 
 bool Image::saveToFile(std::string filename)
@@ -126,7 +135,7 @@ void Image::convertToColor(OutputColorEnum color)
 		case GREEN:
 				for (int i = 0; i < _width * _height; ++i) 
 				{
-					_imageData[i].r = (byte)0; //color em black? or white? what is best?
+					_imageData[i].r = (byte)0; //I kinda prefer black
 					_imageData[i].b = (byte)0;
 				}
 			break;
@@ -134,11 +143,12 @@ void Image::convertToColor(OutputColorEnum color)
 		case BLUE:
 				for (int i = 0; i < _width * _height; ++i) 
 				{
-					_imageData[i].g = (byte)0; //color em black? or white? what is best?
+					_imageData[i].g = (byte)0; //Makes the image better defined
 					_imageData[i].r = (byte)0;
 				}
 			break;
-		case INVERTED:
+
+		case INVERTED://added just for fun
 				for (int i = 0; i < _width * _height; ++i) 
 				{
 					_imageData[i].r = (byte)(255 - (int)_imageData[i].r);
@@ -149,7 +159,7 @@ void Image::convertToColor(OutputColorEnum color)
 	}
 }
 
-bool Image::Excists()
+bool Image::Exists()
 {
 	return _inputImage;
 }

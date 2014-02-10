@@ -1,5 +1,7 @@
 #include <iostream>
 #include "Image.h"
+#include "Histogram.h"
+#include <list>
 
 std::string filename, yesOrNo;
 Image originalImage;
@@ -27,7 +29,7 @@ int main(int argc, char* argv[])
 	std::cout << "I am going to use the file: '" << filename << "'" << std::endl;
 	originalImage = Image(filename);
 
-	if (!originalImage.Excists()) {
+	if (!originalImage.Exists()) {
 		stop("Image could not be loaded");
 	} 
 
@@ -45,13 +47,24 @@ void grayScaleRoutine()
 	std::cout << "Converting the image to grayscale." << std::endl;
 	Image grayScaleImage = Image(filename);
 	grayScaleImage.convertToColor(Image::GRAYSCALE);
+
 	std::stringstream ss;
 	ss << "grey_" <<grayScaleImage.getFileNameWithoutExtension() << ".png"; // save as png
 
 	if(grayScaleImage.saveToFile(ss.str()))
 	{
 		std::cout<< "Saving image succeeded." << std::endl;
-		// create 2 bins (10 - 256)
+
+		Histogram histogram10Bins = Histogram(10);
+		if(histogram10Bins.calculateGrayBins(grayScaleImage)){
+			std::cout<< "Saving grayscale image-histogram(10) succeeded." << std::endl;
+		}
+		
+		Histogram histogram256Bins = Histogram(256);
+		if(histogram256Bins.calculateGrayBins(grayScaleImage)){
+			std::cout<< "Saving grayscale image-histogram(256) succeeded." << std::endl;
+		}
+
 	}
 	else 
 	{
@@ -87,7 +100,7 @@ void colorRoutine()
 	ss << "R_" << redImage.getFileNameWithoutExtension() << ".png"; // save as png
 	if(redImage.saveToFile(ss.str()))
 	{
-		std::cout<< "Saving RedChannelImage image succeeded." << std::endl;
+		std::cout<< "Saving image image succeeded." << std::endl;
 	}
 
 	std::cout << "Converting the image to G(reen) color channel." << std::endl;
