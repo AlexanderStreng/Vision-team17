@@ -42,14 +42,9 @@ int main(int argc, char* argv[])
 	std::cout << "Loaded img:" << originalImage.getFileNameWithoutExtension() << " dimensions(WxH):"  
 		<< originalImage.getWidth() << " x " << originalImage.getHeight() << " (in " << bt->elapsedMilliSeconds() << " miliseconds)" << std::endl;
 
-	std::cout << "Saving the image" << std::endl;
-	bt->reset(); bt->start();
-	originalImage.saveToFile("bitmap_test_.bmp");
-	bt->stop(); 
-	std::cout<< "Saving image succeeded. (in " << bt->elapsedMilliSeconds() << " miliseconds)" << std::endl;
-	//grayScaleRoutine();
-	//colorRoutine();
-	//invertRoutine();
+	grayScaleRoutine();
+	colorRoutine();
+	invertRoutine();
 
 	ss.str("");
 	ss << "Timings_" << originalImage.getFileNameWithoutExtension() << ".csv"; // save as png

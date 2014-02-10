@@ -97,7 +97,7 @@ bool Image::saveToFile(std::string filename)
 	{ 
 		return false;
 	}
-
+	//still need to write proper haeder
 	BITMAPINFOHEADER BMIH;
 	BMIH.biSize = sizeof(BITMAPINFOHEADER);
 	BMIH.biWidth = imageWidth;
