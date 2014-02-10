@@ -81,16 +81,16 @@ bool Image::saveToFile(std::string filename)
 		data[(i * 3) + 2] = imageData[i].b;
 	}
 
-	//corona::Image* saveImage = corona::CreateImage(imageWidth, imageHeight, corona::PF_R8G8B8, data);
-	//delete [] data; //free up them mems
-	//return corona::SaveImage(filename.c_str(), corona::FF_PNG, saveImage);
+	corona::Image* saveImage = corona::CreateImage(imageWidth, imageHeight, corona::PF_R8G8B8, data);
+	delete [] data; //free up them mems
+	return corona::SaveImage(filename.c_str(), corona::FF_PNG, saveImage);
 	/*
 	* Do we have to write our own file export?
 	* If so, convert to BMP
 	* Still need to hack all the details tho
 	*/
 
-	//Create a new file for writing
+	/*//Create a new file for writing
 	FILE *pFile = fopen(filename.c_str(), "wb");
 
 	if(pFile == NULL)
@@ -135,7 +135,7 @@ bool Image::saveToFile(std::string filename)
 
 	unsigned int nWrittenDIBDataSize = 	fwrite(data, 1, lImageSize, pFile); //(void*)&imageData
 	fclose(pFile);
-	return true; 
+	return true; */
 }
 
 void Image::convertToColor(OutputColorEnum color)

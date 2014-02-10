@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
 
 	if (!originalImage.Exists()) {
 		stop("Image could not be loaded");
-	} 
+	}
 
 	std::cout << "Loaded img:" << originalImage.getFileNameWithoutExtension() << " dimensions(WxH):"  
 		<< originalImage.getWidth() << " x " << originalImage.getHeight() << " (in " << bt->elapsedMilliSeconds() << " miliseconds)" << std::endl;
@@ -85,7 +85,7 @@ void grayScaleRoutine()
 		}
 
 		bt->reset();bt->start();
-		calculateBin = grayScaleImage.calculateBins(10, Image::GRAYSCALE);
+		calculateBin = grayScaleImage.calculateBins(256, Image::GRAYSCALE);
 		bt->stop(); bt->store("Calc_bin256_gray");
 
 		if(calculateBin){
@@ -151,7 +151,6 @@ void invertRoutine()
 void colorRoutine()
 {
 	ss.str("");
-#pragma region Red
 	std::cout << "Converting the image to R(ed) color channel." << std::endl;
 
 	bt->reset(); bt->start();
@@ -185,9 +184,8 @@ void colorRoutine()
 			std::cout<< "Saving red image-histogram(10) succeeded. (in " << bt->elapsedMilliSeconds() << " miliseconds)" << std::endl;
 		}
 	}
-#pragma endregion
 
-#pragma region Green
+	ss.str("");
 	std::cout << "Converting the image to G(reen) color channel." << std::endl;
 
 	bt->reset(); bt->start();
@@ -221,9 +219,8 @@ void colorRoutine()
 			std::cout<< "Saving green image-histogram(10) succeeded. (in " << bt->elapsedMilliSeconds() << " miliseconds)" << std::endl;
 		}
 	}
-#pragma endregion
 
-#pragma region Blue
+	ss.str("");
 	std::cout << "Converting the image to B(lue) color channel." << std::endl;
 	bt->reset(); bt->start();
 	Image blueImage = Image(originalImage);
@@ -256,7 +253,6 @@ void colorRoutine()
 			std::cout<< "Saving blue image-histogram(10) succeeded. (in " << bt->elapsedMilliSeconds() << " miliseconds)" << std::endl;
 		}
 	}
-#pragma endregion
 }
 
 void stop(std::string msg)
