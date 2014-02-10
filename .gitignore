@@ -56,6 +56,7 @@ TestResult.xml
 *.png
 *.txt
 *.csv
+*.sdf
 
 # Chutzpah Test files
 _Chutzpah*
