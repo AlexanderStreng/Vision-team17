@@ -81,32 +81,31 @@ bool Image::saveToFile(std::string filename)
 		data[(i * 3) + 2] = imageData[i].b;
 	}
 
-	corona::Image* saveImage = corona::CreateImage(imageWidth, imageHeight, corona::PF_R8G8B8, data);
-
-	delete [] data; //free up them mems
-	return corona::SaveImage(filename.c_str(), corona::FF_PNG, saveImage);
+	//corona::Image* saveImage = corona::CreateImage(imageWidth, imageHeight, corona::PF_R8G8B8, data);
+	//delete [] data; //free up them mems
+	//return corona::SaveImage(filename.c_str(), corona::FF_PNG, saveImage);
 	/*
 	* Do we have to write our own file export?
 	* If so, convert to BMP
 	* Still need to hack all the details tho
-
+	*/
 
 	//Create a new file for writing
 	FILE *pFile = fopen(filename.c_str(), "wb");
 
 	if(pFile == NULL)
 	{ 
-	return false;
+		return false;
 	}
 
 	BITMAPINFOHEADER BMIH;
 	BMIH.biSize = sizeof(BITMAPINFOHEADER);
-	BMIH.biimageWidth = _imageWidth;
-	BMIH.biimageHeight = _imageHeight;
+	BMIH.biWidth = imageWidth;
+	BMIH.biHeight = imageHeight;
 	BMIH.biPlanes = 1;
 	BMIH.biBitCount = 32;
 	BMIH.biCompression = 0;
-	BMIH.biSizeImage = _imageWidth * _imageHeight * 3;
+	BMIH.biSizeImage = imageWidth * imageHeight * 3 ;
 	BMIH.biXPelsPerMeter = 0;
 	BMIH.biYPelsPerMeter = 0;
 	BMIH.biClrUsed = 0;
@@ -134,9 +133,9 @@ bool Image::saveToFile(std::string filename)
 	//move file point to the begging of bitmap data
 	fseek(pFile, nBitsOffset, SEEK_SET);
 
-	unsigned int nWrittenDIBDataSize = 	fwrite(pixels, 1, lImageSize, pFile); //(void*)&imageData
+	unsigned int nWrittenDIBDataSize = 	fwrite(data, 1, lImageSize, pFile); //(void*)&imageData
 	fclose(pFile);
-	return true; */
+	return true; 
 }
 
 void Image::convertToColor(OutputColorEnum color)

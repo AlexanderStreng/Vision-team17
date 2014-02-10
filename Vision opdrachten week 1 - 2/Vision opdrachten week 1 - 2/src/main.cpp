@@ -33,8 +33,8 @@ int main(int argc, char* argv[])
 
 	bt->start();
 	originalImage = Image(filename);
-	bt->stop();
-	bt->store("Load_Image");
+	bt->stop(); bt->store("Load_Image");
+
 	if (!originalImage.Exists()) {
 		stop("Image could not be loaded");
 	} 
@@ -42,9 +42,14 @@ int main(int argc, char* argv[])
 	std::cout << "Loaded img:" << originalImage.getFileNameWithoutExtension() << " dimensions(WxH):"  
 		<< originalImage.getWidth() << " x " << originalImage.getHeight() << " (in " << bt->elapsedMilliSeconds() << " miliseconds)" << std::endl;
 
-	grayScaleRoutine();
-	colorRoutine();
-	invertRoutine();
+	std::cout << "Saving the image" << std::endl;
+	bt->reset(); bt->start();
+	originalImage.saveToFile("bitmap_test_.bmp");
+	bt->stop(); 
+	std::cout<< "Saving image succeeded. (in " << bt->elapsedMilliSeconds() << " miliseconds)" << std::endl;
+	//grayScaleRoutine();
+	//colorRoutine();
+	//invertRoutine();
 
 	ss.str("");
 	ss << "Timings_" << originalImage.getFileNameWithoutExtension() << ".csv"; // save as png
