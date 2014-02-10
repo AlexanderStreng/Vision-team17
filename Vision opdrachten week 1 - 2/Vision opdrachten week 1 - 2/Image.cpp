@@ -172,11 +172,11 @@ bool Image::calculateGrayBins(int bins) //presuming this is a grayscale image!
 
 bool Image::EqualizeImage(int bins)
 {
-	int imageSize = (imageWidth * imageHeight);
+	long imageSize = (imageWidth * imageHeight);
 	//scaling factor, x = 255 / number of pixels
-	int scale = 255 / imageSize;
+	float scale = (float)bins / (float)imageSize;
 
-	int* lookupHistogram = new int[bins];
+	int* lookupHistogram = new int[bins]();
 
 	// Build Cumulative Histogram which will be our lookup table 
 	lookupHistogram[0] = histogramBins[0] * scale; 
@@ -187,9 +187,9 @@ bool Image::EqualizeImage(int bins)
 	}
 
 	//now reassign all pixelss
-	for (int i = 0; i < imageSize; i++) { 
-		//
-		int newValue = lookupHistogram[imageData[i].r];
+	for (int i = 0; i < imageSize; i++) 
+	{ 
+		int newValue = lookupHistogram[(int)imageData[i].r];
 		if (newValue > 255) 
 		{ 
 			imageData[i].r = imageData[i].g = imageData[i].b = (int)(255); 
@@ -198,7 +198,7 @@ bool Image::EqualizeImage(int bins)
 		{
 			imageData[i].r = imageData[i].g = imageData[i].b = (int)(newValue); 
 		}
-	} 	
+	} 
 	delete [] lookupHistogram; //cleanup
 	return true;
 
