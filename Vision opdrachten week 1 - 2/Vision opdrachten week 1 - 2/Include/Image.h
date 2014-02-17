@@ -5,10 +5,12 @@
 #include <fstream>
 #include "corona.h"
 #include "globals.h"
+#include <time.h>       /* time */
 
 
 class Image {
 public:
+	enum noiseTypeEnum { SALTANDPEPPER, GAUSSIAN };
 	Image::Image();
 	Image(std::string filename);
 	bool Exists();
@@ -18,6 +20,7 @@ public:
 	std::string getFileNameWithoutExtension();
 	bool Image::saveToFile(std::string filename);
 	void convertToColor(OutputColorEnum color);
+	int addNoise(int amount, noiseTypeEnum noise); // Returns amount of bits flipped.
 	~Image();
 	Image::Image(const Image& image);
 	Pixel * getImageData();

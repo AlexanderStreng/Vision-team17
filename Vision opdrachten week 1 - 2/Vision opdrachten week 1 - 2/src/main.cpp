@@ -14,6 +14,7 @@ void stop(std::string msg);
 void grayScaleRoutine(); //Preventing clutter in main function
 void colorRoutine();
 void invertRoutine();
+void saltAndPepperRoutine();
 
 int main(int argc, char* argv[])
 {
@@ -47,6 +48,7 @@ int main(int argc, char* argv[])
 	grayScaleRoutine();
 	colorRoutine();
 	invertRoutine();
+	saltAndPepperRoutine();
 
 	ss.str("");
 	ss << "Timings_" << originalImage.getFileNameWithoutExtension() << ".csv"; // save as png
@@ -250,6 +252,31 @@ void colorRoutine()
 			std::cout<< "Saving blue image-histogram(10) succeeded. (in " << bt->elapsedMilliSeconds() << " miliseconds)" << std::endl;
 		}
 	}
+}
+
+void saltAndPepperRoutine()
+{
+	ss.str("");
+	std::cout << "Applying Salt and pepper noise to image." << std::endl;
+
+	bt->reset(); bt->start();
+	Image saltAndPepperImage = Image(originalImage);
+	bt->stop();	bt->store("Copy_originalImage");
+
+	bt->reset(); bt->start();
+	saltAndPepperImage.convertToColor(GRAYSCALE);
+	bt->stop();	bt->store("Convert_saltAndPepperImage_grayscale");
+
+	bt->reset(); bt->start();
+	int bitsFlipped = saltAndPepperImage.addNoise(5, Image::SALTANDPEPPER);
+	bt->stop();	bt->store("Add_salt_pepper_noise");
+
+	std::cout << "Added noise to image. Total amount of bits flipped: " << bitsFlipped << "." << std::endl;
+
+	ss << "noise_" << saltAndPepperImage.getFileNameWithoutExtension() << ".png"; // save as png
+	bt->reset(); bt->start();
+	saltAndPepperImage.saveToFile(ss.str());
+	bt->stop();	bt->store("Save_saltAndPepperImage");
 }
 
 void stop(std::string msg)

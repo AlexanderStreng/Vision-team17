@@ -15,7 +15,6 @@ Histogram::Histogram(int bins, OutputColorEnum color, Image * image) :
 	calculateBins();
 }
 
-
 Histogram::~Histogram(void)
 {
 	delete [] histogramBins;

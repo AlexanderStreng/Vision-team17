@@ -16,13 +16,13 @@ Image::Image(const Image& image) :
 	imageHeight(0),
 	imageData(0)
 {
-    filename = image.filename;
-    imageWidth = image.imageWidth;
-    imageHeight = image.imageHeight;
+	filename = image.filename;
+	imageWidth = image.imageWidth;
+	imageHeight = image.imageHeight;
 
-    if(image.imageData)
+	if(image.imageData)
 	{
-        imageData = new Pixel[imageWidth * imageHeight];
+		imageData = new Pixel[imageWidth * imageHeight];
 		memcpy(imageData, image.imageData, (imageWidth * imageHeight) * sizeof(Pixel)); // copy them image memories
 	}
 }
@@ -82,7 +82,7 @@ bool Image::saveToFile(std::string filename)
 
 	if(pFile == NULL)
 	{ 
-		return false;
+	return false;
 	}
 	//still need to write proper haeder
 	BITMAPINFOHEADER BMIH;
@@ -170,6 +170,27 @@ void Image::convertToColor(OutputColorEnum color)
 		}
 		break;
 	}
+}
+
+int Image::addNoise(int amount, noiseTypeEnum noise){ // amount in %
+	int bitsFlipped = 0;
+	srand (time(NULL)); // initialize the seed based on time.  This way the outcome is different every Run.
+
+	for (int i = 0; i < imageWidth * imageHeight; ++i) 
+	{
+		if(rand() % 100+1 <= amount )
+		{
+			int val = 0;
+			if(rand() % 2+1 == 1)
+			{
+				val = 255;
+			} 
+
+			imageData[i].r = imageData[i].g = imageData[i].b = (byte)val;
+			bitsFlipped++;
+		}
+	}
+	return bitsFlipped;
 }
 
 bool Image::Exists()
