@@ -4,34 +4,23 @@
 #include <sstream>
 #include <fstream>
 #include "corona.h"
+#include "globals.h"
 
-typedef unsigned char byte;
 
 class Image {
 public:
-	struct Pixel
-	{
-		Pixel(){}
-		Pixel(byte r, byte g, byte b, byte a) : r(r), g(g), b(b), a(a){}
-		byte r, g, b, a;
-	}; //alpha might come in handy later
-	enum OutputColorEnum { GRAYSCALE, RED, GREEN, BLUE, INVERTED };
 	Image::Image();
 	Image(std::string filename);
 	bool Exists();
 	int getWidth();
 	int getHeight();
-	int bins;
-	int* histogramBins;
 	std::string getFileName();
 	std::string getFileNameWithoutExtension();
 	bool Image::saveToFile(std::string filename);
 	void convertToColor(OutputColorEnum color);
-	bool saveHistogramAsCSV(int bins, std::string color);
-	bool EqualizeImage(int bins);
-	bool calculateBins(int bins, OutputColorEnum color);
 	~Image();
 	Image::Image(const Image& image);
+	Pixel * getImageData();
 private:
 	int imageWidth;
 	int imageHeight;
