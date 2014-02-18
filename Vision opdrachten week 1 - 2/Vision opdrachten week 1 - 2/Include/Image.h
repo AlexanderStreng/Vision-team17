@@ -5,6 +5,7 @@
 #include <fstream>
 #include "corona.h"
 #include "globals.h"
+#include <random>
 #include <time.h>       /* time */
 
 

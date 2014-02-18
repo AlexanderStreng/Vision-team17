@@ -174,18 +174,17 @@ void Image::convertToColor(OutputColorEnum color)
 
 int Image::addNoise(int amount, noiseTypeEnum noise){ // amount in %
 	int bitsFlipped = 0;
-	srand (time(NULL)); // initialize the seed based on time.  This way the outcome is different every Run.
-
+	std::mt19937 mt(time(NULL));
+	std::uniform_int_distribution<int> noiseProb(0, 99);
+	std::uniform_int_distribution<int> blackOrWhite(0, 1);
 	for (int i = 0; i < imageWidth * imageHeight; ++i) 
 	{
-		if(rand() % 100+1 <= amount )
+		if(noiseProb(mt) <= amount )
 		{
 			int val = 0;
-			if(rand() % 2+1 == 1)
-			{
+			if(blackOrWhite(mt) == 1) {
 				val = 255;
 			} 
-
 			imageData[i].r = imageData[i].g = imageData[i].b = (byte)val;
 			bitsFlipped++;
 		}

@@ -4,6 +4,8 @@
 #include "exectimer.h"
 #include "basetimer.h"
 #include "globals.h"
+#include <random>
+#include <time.h>       /* time */
 
 std::string filename, yesOrNo;
 Image originalImage;
@@ -15,6 +17,7 @@ void grayScaleRoutine(); //Preventing clutter in main function
 void colorRoutine();
 void invertRoutine();
 void saltAndPepperRoutine();
+void randomRoutine();
 
 int main(int argc, char* argv[])
 {
@@ -45,16 +48,68 @@ int main(int argc, char* argv[])
 	std::cout << "Loaded img:" << originalImage.getFileNameWithoutExtension() << " dimensions(WxH):"  
 		<< originalImage.getWidth() << " x " << originalImage.getHeight() << " (in " << bt->elapsedMilliSeconds() << " miliseconds)" << std::endl;
 
-	grayScaleRoutine();
-	colorRoutine();
-	invertRoutine();
-	saltAndPepperRoutine();
+	//grayScaleRoutine();
+	//colorRoutine();
+	//invertRoutine();
+	//saltAndPepperRoutine();
+	randomRoutine();
 
 	ss.str("");
 	ss << "Timings_" << originalImage.getFileNameWithoutExtension() << ".csv"; // save as png
 	bt->save(ss.str());
 	delete bt;
 	stop("");
+}
+
+void randomRoutine()
+{
+	int bitsFlipped = 0;
+
+	long dur = 100000000000;
+
+	for(int runs = 0; runs < 20; runs++)
+	{	
+		int seed = time(NULL); //Use same int32 seed.
+		srand (seed);  // set seed
+		std::mt19937 mt(seed);  // set seed
+		std::uniform_int_distribution<int> dist(0, 99);
+
+		long* mt19937Bins = new long[100]();
+
+		bt->reset(); bt->start();
+		for (int i = 0; i < dur; ++i) 
+		{
+			mt19937Bins[(int)dist(mt)]++;
+		}
+		bt->stop();	bt->store("rand_mt19937");
+		std::cout << "Done mt19937. Total duration: " << bt->elapsedMilliSeconds() << "." << std::endl;
+
+		long* randBins = new long[100]();
+
+		bt->reset(); bt->start();
+		for (int i = 0; i < dur; ++i) 
+		{
+			randBins[(int)(rand() % 100)]++;
+		}
+		bt->stop();	bt->store("rand_rand()");
+		std::cout << "Done rand(). Total duration: " << bt->elapsedMilliSeconds() << "." << std::endl;
+
+		std::ofstream csvFile;
+		ss.str("");
+		ss << "random_results_" << runs << ".csv";
+		csvFile.open(ss.str()); 
+		csvFile << "Nummer" << "," << "aantal_mt19937"  << "," << "aantal_rand()" << std::endl; 
+
+		for (int i = 0 ; i < 100; i++) 
+		{ 
+			csvFile << i << "," << (long)mt19937Bins[i]  << "," << (long)randBins[i]  << std::endl; 
+		} 
+
+		csvFile.close();
+		delete [] mt19937Bins;
+		delete [] randBins;
+		std::cout << "Weggeschreven naar bestand." << std::endl;
+	}
 }
 
 void grayScaleRoutine()
