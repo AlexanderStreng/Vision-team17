@@ -6,12 +6,11 @@
 #include "corona.h"
 #include "globals.h"
 #include <random>
-#include <time.h>       /* time */
+#include <time.h>       /* time for rand() */
 
 
 class Image {
 public:
-	enum noiseTypeEnum { SALTANDPEPPER, GAUSSIAN };
 	Image::Image();
 	Image(std::string filename);
 	bool Exists();
@@ -19,18 +18,22 @@ public:
 	int getHeight();
 	std::string getFileName();
 	std::string getFileNameWithoutExtension();
-	bool Image::saveToFile(std::string filename);
-	void convertToColor(OutputColorEnum color);
+	bool Image::saveToFile(std::string filename, ColorEnum color);
+	void convertToColor(ColorEnum color);
 	int addNoise(int amount, noiseTypeEnum noise); // Returns amount of bits flipped.
 	~Image();
 	Image::Image(const Image& image);
-	Pixel * getImageData();
+	byte * getImageData(ColorEnum color);
+	Pixel* Image::getPixelData();
 private:
 	int imageWidth;
 	int imageHeight;
 	corona::Image* inputImage;
 	std::string filename;
-	Pixel* imageData; //our pixels stored in memory
+	byte* grayData; 
+	byte* redData;
+	byte* greenData;
+	byte* blueData;
 
 	//bitmap file headers
 	typedef struct bitmapFileHeader

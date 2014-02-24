@@ -1,7 +1,11 @@
 #pragma once
 
 typedef unsigned char byte;
-enum OutputColorEnum { GRAYSCALE, RED, GREEN, BLUE, INVERTED };
+
+enum ColorEnum { GRAYSCALE, RED, GREEN, BLUE, INVERTED, FULLCOLOUR };
+enum kernelTypeEnum { MIN, MAX, MEAN, MEDIAN, GAUSSIAN, SHARPEN, SOFTEN, DYNAMIC };
+enum noiseTypeEnum { SALTANDPEPPER, GAUSSIANNOISE };
+
 struct Pixel
 {
 	Pixel(){}

@@ -7,7 +7,7 @@
 class Histogram
 {
 public:
-	Histogram(int bins, OutputColorEnum color, Image * image);
+	Histogram(int bins, ColorEnum color, Image * image);
 	~Histogram();
 	bool saveHistogramAsCSV(std::string prefix);
 	bool EqualizeImage();
@@ -15,10 +15,10 @@ private:
 	int imageWidth;
 	int imageHeight;
 	Image* imagePtr;
-	Pixel* imageData;
+	byte* imageData;
 	int bins;
 	int* histogramBins;
-	OutputColorEnum imageColor;
+	ColorEnum imageColor;
 	void calculateBins();
 };
 

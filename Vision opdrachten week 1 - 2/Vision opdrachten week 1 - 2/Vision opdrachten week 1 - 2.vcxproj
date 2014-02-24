@@ -84,15 +84,19 @@
     <ClInclude Include="include\basetimer.h" />
     <ClInclude Include="Include\corona.h" />
     <ClInclude Include="include\exectimer.h" />
+    <ClInclude Include="Include\Filter.h" />
     <ClInclude Include="Include\Globals.h" />
     <ClInclude Include="Include\Histogram.h" />
     <ClInclude Include="include\Image.h" />
+    <ClInclude Include="Include\Kernel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\basetimer.cpp" />
     <ClCompile Include="src\exectimer.cpp" />
+    <ClCompile Include="Src\Filter.cpp" />
     <ClCompile Include="src\Histogram.cpp" />
     <ClCompile Include="src\Image.cpp" />
+    <ClCompile Include="Src\Kernel.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
