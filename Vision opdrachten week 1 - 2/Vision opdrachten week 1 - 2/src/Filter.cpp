@@ -7,8 +7,6 @@ Filter::Filter(Image* image, Kernel* kernel) :
 }
 
 void Filter::ApplyFilter(ColorEnum color) {
-	//Pixel * imageData = imagePtr->getImageData(); //pointer to our data.
-
 	int imageWidth = imagePtr->getWidth();
 	int imageHeight = imagePtr->getHeight();
 	double* kernel = kernelPtr->getKernelData();
@@ -40,8 +38,7 @@ void Filter::ApplyFilter(ColorEnum color) {
 						sum += imageDataSource[((y + i) * imageWidth) + (x + j)];
 					}
 				}
-				int dexin = (y * imageWidth) + x;
-				imageData[dexin] = (byte)(sum / totalKernelSize);
+				imageData[(y * imageWidth) + x] = (byte)(sum / totalKernelSize);
 			}
 		}
 		delete [] imageDataSource;//cleanup
