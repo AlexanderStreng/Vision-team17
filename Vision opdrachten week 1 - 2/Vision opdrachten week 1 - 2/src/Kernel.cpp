@@ -36,6 +36,10 @@ void Kernel::initializeKernel() {
 	}
 }
 
+double* Kernel::getKernelData() {
+	return kernel;
+}
+
 int Kernel::getKernelSize() {
 	return kernelSize;
 }

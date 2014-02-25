@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Image.h"
 #include "Histogram.h"
+#include "Kernel.h"
+#include "Filter.h"
 #include "exectimer.h"
 #include "basetimer.h"
 #include "globals.h"
@@ -16,8 +18,7 @@ void stop(std::string msg);
 void grayScaleRoutine(); //Preventing clutter in main function
 void colorRoutine();
 void invertRoutine();
-void saltAndPepperRoutine();
-void randomRoutine();
+void MedianFilterRoutine();
 
 int main(int argc, char* argv[])
 {
@@ -51,7 +52,7 @@ int main(int argc, char* argv[])
 	grayScaleRoutine();
 	colorRoutine();
 	invertRoutine();
-	saltAndPepperRoutine();
+	MedianFilterRoutine();
 
 	ss.str("");
 	ss << "Timings_" << originalImage.getFileNameWithoutExtension() << ".csv"; // save as png
@@ -228,9 +229,8 @@ void colorRoutine()
 	}
 }
 
-void saltAndPepperRoutine()
+void MedianFilterRoutine()
 {
-	ss.str("");
 	std::cout << "Applying Salt and pepper noise to image." << std::endl;
 
 	bt->reset(); bt->start();
@@ -240,13 +240,29 @@ void saltAndPepperRoutine()
 	bt->reset(); bt->start();
 	int bitsFlipped = saltAndPepperImage.addNoise(5, SALTANDPEPPER);
 	bt->stop();	bt->store("Add_salt_pepper_noise");
-	std::cout << "Added noise to image. Percentage converted: " << (((double)bitsFlipped / (originalImage.getWidth() * originalImage.getHeight())) * 100) << "%. \t(in " << bt->elapsedMilliSeconds()  << " milliseconds)" << std::endl;
-
+	std::cout << "Added noise to image. Percentage converted: " << (((double)bitsFlipped / (originalImage.getWidth() * originalImage.getHeight())) * 100) << "%. \t(in " << bt->elapsedMilliSeconds()  << "		milliseconds)" << std::endl;
+	
+	ss.str("");
 	ss << "noise_" << saltAndPepperImage.getFileNameWithoutExtension() << ".png"; // save as png
 	bt->reset(); bt->start();
-	saltAndPepperImage.saveToFile(ss.str(), FULLCOLOUR);
+	saltAndPepperImage.saveToFile(ss.str(), GRAYSCALE);
 	bt->stop();	bt->store("Save_saltAndPepperImage");
 	std::cout<< "Saving noise image succeeded. \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
+
+
+	bt->reset(); bt->start();
+	Filter filter = Filter(&saltAndPepperImage, &Kernel(5, 1, MEAN));
+	filter.ApplyFilter(GRAYSCALE);
+	bt->stop();	bt->store("Did_medianFilter");
+	std::cout<< "Median filter succeded. \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
+	
+	ss.str("");
+	ss << "median_" << saltAndPepperImage.getFileNameWithoutExtension() << ".png"; // save as png
+	bt->reset(); bt->start();
+	saltAndPepperImage.saveToFile(ss.str(), GRAYSCALE);
+	bt->stop();	bt->store("Save_saltAndPepperImage");
+	std::cout<< "Saving median filtered image succeeded. \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
+
 }
 
 void stop(std::string msg)

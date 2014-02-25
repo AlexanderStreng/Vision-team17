@@ -10,6 +10,7 @@ public:
 	void setFactor(int factor);
 	void initializeKernel();
 	int getKernelSize();
+	double* getKernelData();
 	~Kernel(void);
 private:
 	int kernelSize; // e.g. 3 to create a 3x3 kernel
