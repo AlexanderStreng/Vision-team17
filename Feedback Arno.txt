@@ -1,0 +1,3 @@
+Ik zie nog geheel geen meetrapporten. Hoe zit dit? Ben je hier nog niet aan toegekomen, of heb je ze wel maar staan ze niet in github?
+
+Qua code is het wat weinig lijkt mij. De code die je hebt ziet er best goed uit. Het enige is dat in Filter alleen het mean-filter is geimplementeerd. Je hebt het algemeen opgezet, maar toch hele specifieke code dan weer daar in gezet. 
