@@ -18,7 +18,7 @@ void stop(std::string msg);
 void grayScaleRoutine(); //Preventing clutter in main function
 void colorRoutine();
 void invertRoutine();
-void MedianFilterRoutine();
+void FilterRoutine();
 
 int main(int argc, char* argv[])
 {
@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
 	grayScaleRoutine();
 	colorRoutine();
 	invertRoutine();
-	MedianFilterRoutine();
+	FilterRoutine();
 
 	ss.str("");
 	ss << "Timings_" << originalImage.getFileNameWithoutExtension() << ".csv"; // save as png
@@ -229,7 +229,7 @@ void colorRoutine()
 	}
 }
 
-void MedianFilterRoutine()
+void FilterRoutine()
 {
 	std::cout << "Applying Salt and pepper noise to image." << std::endl;
 
@@ -238,10 +238,10 @@ void MedianFilterRoutine()
 	bt->stop();	bt->store("Copy_originalImage");
 
 	bt->reset(); bt->start();
-	int bitsFlipped = saltAndPepperImage.addNoise(5, SALTANDPEPPER);
+	int bitsFlipped = saltAndPepperImage.addNoise(15, SALTANDPEPPER);
 	bt->stop();	bt->store("Add_salt_pepper_noise");
 	std::cout << "Added noise to image. Percentage converted: " << (((double)bitsFlipped / (originalImage.getWidth() * originalImage.getHeight())) * 100) << "%. \t(in " << bt->elapsedMilliSeconds()  << "		milliseconds)" << std::endl;
-	
+
 	ss.str("");
 	ss << "noise_" << saltAndPepperImage.getFileNameWithoutExtension() << ".png"; // save as png
 	bt->reset(); bt->start();
@@ -249,19 +249,47 @@ void MedianFilterRoutine()
 	bt->stop();	bt->store("Save_saltAndPepperImage");
 	std::cout<< "Saving noise image succeeded. \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
 
-
+	Image MedianImage = Image(saltAndPepperImage);
 	bt->reset(); bt->start();
-	Filter filter = Filter(&saltAndPepperImage, &Kernel(5, 1, MEAN));
-	filter.ApplyFilter(GRAYSCALE);
+	Filter medianFilter = Filter(&MedianImage, &Kernel(3, 1, MEDIAN));
+	medianFilter.ApplyFilter(MEDIAN, GRAYSCALE, 1);
 	bt->stop();	bt->store("Did_medianFilter");
 	std::cout<< "Median filter succeded. \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
-	
+
 	ss.str("");
-	ss << "median_" << saltAndPepperImage.getFileNameWithoutExtension() << ".png"; // save as png
+	ss << "median_" << MedianImage.getFileNameWithoutExtension() << ".png"; // save as png
 	bt->reset(); bt->start();
-	saltAndPepperImage.saveToFile(ss.str(), GRAYSCALE);
-	bt->stop();	bt->store("Save_saltAndPepperImage");
+	MedianImage.saveToFile(ss.str(), GRAYSCALE);
+	bt->stop();	bt->store("Save_medianImage");
 	std::cout<< "Saving median filtered image succeeded. \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
+
+	Image MinImage = Image(saltAndPepperImage);
+	bt->reset(); bt->start();
+	Filter minFilter = Filter(&MinImage, &Kernel(3, 1, MIN));
+	minFilter.ApplyFilter(MIN, GRAYSCALE, 1);
+	bt->stop();	bt->store("Did_minFilter");
+	std::cout<< "Min filter succeded. \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
+
+	ss.str("");
+	ss << "min_" << MinImage.getFileNameWithoutExtension() << ".png"; // save as png
+	bt->reset(); bt->start();
+	MinImage.saveToFile(ss.str(), GRAYSCALE);
+	bt->stop();	bt->store("Save_minImage");
+	std::cout<< "Saving min filtered image succeeded. \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
+
+	Image MaxImage = Image(saltAndPepperImage);
+	bt->reset(); bt->start();
+	Filter maxFilter = Filter(&MaxImage, &Kernel(3, 1, MAX));
+	maxFilter.ApplyFilter(MAX, GRAYSCALE, 1);
+	bt->stop();	bt->store("Did_maxFilter");
+	std::cout<< "Max filter succeded. \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
+
+	ss.str("");
+	ss << "max_" << MaxImage.getFileNameWithoutExtension() << ".png"; // save as png
+	bt->reset(); bt->start();
+	MedianImage.saveToFile(ss.str(), GRAYSCALE);
+	bt->stop();	bt->store("Save_sMaxImage");
+	std::cout<< "Saving max filtered image succeeded. \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
 
 }
 

@@ -1,7 +1,7 @@
 #include "Kernel.h"
 
 
-Kernel::Kernel(int kernelSize, int kernelFactor, kernelTypeEnum kernelType):
+Kernel::Kernel(int kernelSize, int kernelFactor, filterTypeEnum kernelType):
 	kernelSize(kernelSize),
 	kernelFactor(kernelFactor),
 	kernelType(kernelType) {
@@ -14,30 +14,14 @@ Kernel::~Kernel(void) {
 
 void Kernel::initializeKernel() {
 	int totalKernelSize = kernelSize * kernelSize;
-	kernel = new double[totalKernelSize](); //allocate some space.
-
-	switch(kernelType) {
-	case MIN:
-		break;
-	case MAX:
-		break;
-	case MEAN:
-		for(int i = 0; i < totalKernelSize; ++i) {
-			kernel[i] = 1 / totalKernelSize;
-		}
-		break;
-	case MEDIAN:
-		break;
-	case DYNAMIC:
-		break;
-	default:
-		//throw notImplemented()
-		break;
-	}
 }
 
 double* Kernel::getKernelData() {
 	return kernel;
+}
+
+filterTypeEnum Kernel::getKernelFilterType() {
+	return kernelType;
 }
 
 int Kernel::getKernelSize() {
