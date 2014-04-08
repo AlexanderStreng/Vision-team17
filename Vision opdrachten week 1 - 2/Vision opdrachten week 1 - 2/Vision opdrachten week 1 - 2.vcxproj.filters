@@ -42,6 +42,9 @@
     <ClInclude Include="Include\Kernel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Kmeans.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\basetimer.cpp">
@@ -53,9 +56,6 @@
     <ClCompile Include="src\Image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Histogram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -63,6 +63,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\Kernel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Kmeans.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

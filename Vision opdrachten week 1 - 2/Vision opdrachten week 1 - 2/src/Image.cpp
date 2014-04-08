@@ -20,7 +20,8 @@ Image::Image(const Image& image) :
 	grayData(0),
 	redData(0),
 	greenData(0),
-	blueData(0)
+	blueData(0),
+	colorData(0)
 {
 	filename = image.filename;
 	imageWidth = image.imageWidth;
@@ -46,6 +47,11 @@ Image::Image(const Image& image) :
 		blueData = new byte[imageWidth * imageHeight];
 		memcpy(blueData, image.blueData, (imageWidth * imageHeight) * sizeof(byte)); // copy them image memories
 	}
+	if(image.colorData)
+	{
+		colorData = new Pixel[imageWidth * imageHeight];
+		memcpy(colorData, image.colorData, (imageWidth * imageHeight) * sizeof(Pixel)); // copy them image memories
+	}
 }
 
 Image::Image(std::string filename) :
@@ -61,6 +67,7 @@ Image::Image(std::string filename) :
 	redData = new byte[imageWidth * imageHeight];
 	greenData = new byte[imageWidth * imageHeight];
 	blueData = new byte[imageWidth * imageHeight];
+	colorData = new Pixel[imageWidth * imageHeight];
 
 	void* pixels = inputImage->getPixels();
 	byte* p = (byte*)pixels;
@@ -68,12 +75,14 @@ Image::Image(std::string filename) :
 	//(from the lib.. )
 	// we're guaranteed that the first eight bits of every pixel is red
 	byte gray;
+	int r = 0, g = 0, b = 0;
 	for (int i = 0; i < imageWidth * imageHeight; ++i) //copy all the data into our buffer
 	{
-		redData[i] = *p++;
-		greenData[i] = *p++;
-		blueData[i] = *p++;
-		grayData[i] = ((redData[i] + greenData[i] + blueData[i]) / 3);
+		redData[i] = r = *p++;
+		greenData[i] = g = *p++;
+		blueData[i] = b = *p++;
+		grayData[i] = ((r + g + b) / 3);	
+		colorData[i] = Pixel(r, g, b, 0);
 	}
 
 	delete inputImage; //cleanup the image in mem
@@ -121,6 +130,14 @@ bool Image::saveToFile(std::string filename, ColorEnum color)
 			data[(i * 3) + 2] = blueData[i];
 		}
 		break;	
+	case FULLCOLOUR:
+		for (int i = 0; i < imageWidth * imageHeight; ++i) 
+		{
+			data[i * 3] = colorData[i].r;
+			data[(i * 3) + 1] = colorData[i].g;
+			data[(i * 3) + 2] = colorData[i].b;
+		}
+		break;
 	default:
 		for (int i = 0; i < imageWidth * imageHeight; ++i) 
 		{
@@ -249,19 +266,11 @@ byte* Image::getImageData(ColorEnum color){
 	case BLUE:
 		return blueData;
 		break;
-	}
+	}	
 }
 
 Pixel* Image::getPixelData() {
-	Pixel* pixelData = new Pixel[imageWidth * imageHeight];
-
-	for (int i = 0; i < imageWidth * imageHeight; ++i) //copy all the data into our buffer
-	{
-		redData[i] = pixelData[i].r;
-		greenData[i] = pixelData[i].g;
-		blueData[i] = pixelData[i].b;
-	}
-	return pixelData;
+	return colorData;
 }
 
 std::string Image::getFileName()

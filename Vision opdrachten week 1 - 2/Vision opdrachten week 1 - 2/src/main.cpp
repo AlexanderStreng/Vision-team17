@@ -6,6 +6,7 @@
 #include "exectimer.h"
 #include "basetimer.h"
 #include "globals.h"
+#include "Kmeans.h"
 #include <random>
 #include <time.h>       /* time */
 
@@ -15,10 +16,12 @@ std::stringstream ss;
 BaseTimer* bt;
 
 void stop(std::string msg);
+bool exerciseRoutine();
 void grayScaleRoutine(); //Preventing clutter in main function
 void colorRoutine();
 void invertRoutine();
 void FilterRoutine();
+void KmeansRoutine();
 
 int main(int argc, char* argv[])
 {
@@ -47,18 +50,71 @@ int main(int argc, char* argv[])
 	}
 
 	std::cout << "Loaded img:" << originalImage.getFileNameWithoutExtension() << " dimensions(WxH):"  
-		<< originalImage.getWidth() << " x " << originalImage.getHeight() << " \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
+		<< originalImage.getWidth() << " x " << originalImage.getHeight() << " \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl << std::endl;
 
-	grayScaleRoutine();
-	colorRoutine();
-	invertRoutine();
-	FilterRoutine();
+	bool chosen = false;
+	do {
+		chosen = exerciseRoutine();
+	} while(!chosen);
 
 	ss.str("");
 	ss << "Timings_" << originalImage.getFileNameWithoutExtension() << ".csv"; // save as png
 	bt->save(ss.str());
 	delete bt;
 	stop("");
+}
+
+bool exerciseRoutine() {
+	std::cout << "Which week's exercises do you want to run?" << std::endl
+		<< "Press (1) for week 1&2 ( Histograms, median filtering )" << std::endl
+		<< "Press (2) for week 3&4 ( Kmeans clustering )" << std::endl
+		<< "Press (3) for week 5&6 ( Affine transformations )" << std::endl;
+	char option = 0;
+	option = getchar();
+	switch(option) {
+	case '1':
+		std::cout << "You have chosen to run week 1 and 2. Lets go!" << std::endl;
+		grayScaleRoutine();
+		colorRoutine();
+		invertRoutine();
+		FilterRoutine();
+		return true;
+	case '2':
+		std::cout << "You have chosen to run week 3 and 4. Lets go!" << std::endl;
+		KmeansRoutine();
+		return true;
+	case '3':
+		std::cout << "You have chosen to run week 5 and 6. Lets go!" << std::endl;
+		return true;
+	default:
+		std::cout << "Input could not be read." << std::endl;
+		return false;
+	}
+}
+
+void KmeansRoutine()
+{
+	//get input ( aantal means )
+
+	//prepare image
+	bt->reset(); bt->start();
+	Image kmeansImage = Image(originalImage);
+	bt->stop(); bt->store("Copy_originalImage");
+
+	bt->reset(); bt->start();	
+	//do means routine
+	Kmeans kmeansSegmentation = Kmeans(3, FULLCOLOUR, &kmeansImage);
+	int amountOfIterations = kmeansSegmentation.doMeans();
+	bt->stop(); bt->store("Do_Kmeans");
+
+	std::cout << "Done kmeans in " << amountOfIterations << " iterations \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
+
+	ss.str("");
+	ss << "kmeans_" << kmeansImage.getFileNameWithoutExtension() << ".png"; // save as png
+
+	bt->reset(); bt->start();
+	bool save = kmeansImage.saveToFile(ss.str(), FULLCOLOUR);
+	bt->stop();	bt->store("Save_inverted");
 }
 
 void grayScaleRoutine()

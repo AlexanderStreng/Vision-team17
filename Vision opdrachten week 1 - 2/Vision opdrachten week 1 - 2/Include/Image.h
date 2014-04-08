@@ -34,6 +34,7 @@ private:
 	byte* redData;
 	byte* greenData;
 	byte* blueData;
+	Pixel* colorData;
 
 	//bitmap file headers
 	typedef struct bitmapFileHeader
@@ -43,7 +44,6 @@ private:
 		unsigned short int bfReserved1, bfReserved2; // These are 0
 		unsigned int bfOffBits; // Return the size of the headers. This tells whatever reader where the image data starts			 
 	} BITMAPFILEHEADER;
-
 	typedef struct bitmapInfoHeader
 	{
 		unsigned int biSize; // sizeof(BITMAPINFOHEADER)
@@ -56,6 +56,5 @@ private:
 		unsigned int biClrUsed; // For 24-bit, ignore these	 
 		unsigned int biClrImportant; // Same
 	} BITMAPINFOHEADER;
-
 };
 
