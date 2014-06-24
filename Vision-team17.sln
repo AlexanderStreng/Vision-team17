@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vision-team17", "Vision-team17\Vision-team17.vcxproj", "{77EFD04E-55E8-4C5F-A8D9-EF6CE5F10EC3}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Week 1 - 2", "Week 1 - 2\Week 1 - 2.vcxproj", "{6E851160-B81E-45AC-8083-2C9204C025AB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vision-team17", "Vision-team17\Vision-team17.vcxproj", "{77EFD04E-55E8-4C5F-A8D9-EF6CE5F10EC3}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Week 3 - 4", "Week 3 - 4\Week 3 - 4.vcxproj", "{5356A0E3-0537-4C96-B619-C55380BA1E7D}"
 EndProject
