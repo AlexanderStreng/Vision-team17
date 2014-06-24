@@ -1,5 +1,5 @@
-﻿Build started 2/10/2014 7:01:47 PM.
-     1>Project "D:\School\Projects\vision-timer\Timer\Timer\Timer.vcxproj" on node 3 (Build target(s)).
+﻿Build started 6/24/2014 10:54:46 AM.
+     1>Project "F:\Projects\School\Vision-team17\Timer\Timer\Timer.vcxproj" on node 2 (Build target(s)).
        Project file contains ToolsVersion="12.0". This toolset may be unknown or missing, in which case you may be able to resolve this by installing the appropriate version of MSBuild, or the build may have been forced to a particular ToolsVersion for policy reasons. Treating the project as if it had ToolsVersion="4.0". For more information, please see http://go.microsoft.com/fwlink/?LinkId=291333.
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt basetimer.cpp main.cpp exectimer.cpp
@@ -8,12 +8,12 @@
          basetimer.cpp
          Generating Code...
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\School\Projects\vision-timer\Vision opdrachten week 1 - 2\Debug\Timer.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\School\Projects\vision-timer\Vision opdrachten week 1 - 2\Debug\Timer.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\School\Projects\vision-timer\Vision opdrachten week 1 - 2\Debug\Timer.lib" /MACHINE:X86 Debug\basetimer.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\Projects\School\Vision-team17\Debug\Timer.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:\Projects\School\Vision-team17\Debug\Timer.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:\Projects\School\Vision-team17\Debug\Timer.lib" /MACHINE:X86 Debug\basetimer.obj
          Debug\main.obj
          Debug\exectimer.obj
-         Timer.vcxproj -> D:\School\Projects\vision-timer\Vision opdrachten week 1 - 2\Debug\Timer.exe
-     1>Done Building Project "D:\School\Projects\vision-timer\Timer\Timer\Timer.vcxproj" (Build target(s)).
+         Timer.vcxproj -> F:\Projects\School\Vision-team17\Debug\Timer.exe
+     1>Done Building Project "F:\Projects\School\Vision-team17\Timer\Timer\Timer.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:03.26
+Time Elapsed 00:00:03.29
