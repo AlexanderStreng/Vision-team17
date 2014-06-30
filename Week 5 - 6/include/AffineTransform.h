@@ -8,10 +8,10 @@
 class AffineTransform
 {
 public:
-	AffineTransform(ColorEnum color, Image *image, TransformationMatrix *matrix);
+	AffineTransform(ColorEnum color, Image *image, TransformationMatrix *matrix, interpolationEnum interpolation);
 	~AffineTransform(void);
 	Image doTransformation();
-	void setInterpolationMethod(interpolationEnum interpolation);
+	void setImage(Image* image);
 private:
 	inline Pixel interpolate(float sourceX, float sourceY);
 	interpolationEnum interpolationType;

@@ -15,39 +15,13 @@ TransformationMatrix::TransformationMatrix(std::string filename)
 	while (matrixFile >> floatCharacter) {
 		transformMatrix.push_back(floatCharacter);
 	}
-
-	std::cout << std::endl << "found normal matrix: " << std::endl;
-	for(std::vector<float>::iterator it = transformMatrix.begin(); it != transformMatrix.end(); ++it) {
-		std::cout << *it << " | ";
-	}	
-	std::cout << std::endl;
-
 	calculateInverseMatrix(); // might as well do this right away (where not gonna use the normal matrix, only inverses)..
-
-	std::cout << std::endl << "calculated inverse matrix: " << std::endl;
-	for(std::vector<float>::iterator it = inverseTransformMatrix.begin(); it != inverseTransformMatrix.end(); ++it) {
-		std::cout << *it << " | ";
-	}
-	std::cout << std::endl;
 }
 
 TransformationMatrix::TransformationMatrix(std::vector<float> matrixData)
 {
 	transformMatrix = std::vector<float>(matrixData);
-
-	std::cout << std::endl << "found normal matrix: " << std::endl;
-	for(std::vector<float>::iterator it = transformMatrix.begin(); it != transformMatrix.end(); ++it) {
-		std::cout << *it << " | ";
-	}	
-	std::cout << std::endl;
-
 	calculateInverseMatrix(); // might as well do this right away (where not gonna use the normal matrix, only inverses)..
-
-	std::cout << std::endl << "calculated inverse matrix: " << std::endl;
-	for(std::vector<float>::iterator it = inverseTransformMatrix.begin(); it != inverseTransformMatrix.end(); ++it) {
-		std::cout << *it << " | ";
-	}
-	std::cout << std::endl;
 }
 
 TransformationMatrix::~TransformationMatrix(void)
@@ -93,9 +67,6 @@ void TransformationMatrix::calculateInverseMatrix()
 		g = transformMatrix.at(6), h = transformMatrix.at(7), k = transformMatrix.at(8);
 
 	float determinant = (a * e * k) + (b * f * g) + (c * d * h) - (c * e * g) - (a * f * h) - (b * d * k);
-
-	std::cout << std::endl << "Calculated determinant: " << determinant << std::endl;
-
 
 	if(determinant > 0)
 	{

@@ -1,9 +1,10 @@
 #include "AffineTransform.h"
 
 
-AffineTransform::AffineTransform(ColorEnum color, Image *image, TransformationMatrix* matrix) : 
+AffineTransform::AffineTransform(ColorEnum color, Image *image, TransformationMatrix* matrix, interpolationEnum interpolation) : 
 	imagePtr(image),
-	matrix(matrix)
+	matrix(matrix),
+	interpolationType(interpolation)
 {
 	imageWidth = originalImageWidth = imagePtr->getWidth();
 	imageHeight = originalImageHeight = imagePtr->getHeight();
@@ -15,26 +16,33 @@ AffineTransform::~AffineTransform(void)
 {
 }
 
-void AffineTransform::setInterpolationMethod(interpolationEnum interpolation)
+void AffineTransform::setImage(Image* image)
 {
-	interpolationType = interpolation;
+	imagePtr = image;
+	imageWidth = originalImageWidth = imagePtr->getWidth();
+	imageHeight = originalImageHeight = imagePtr->getHeight();
+	imageData = imagePtr->getImagePixelData(); //pointer to our data. ( we need pixels. ( RGB ) )
 }
 
 Image AffineTransform::doTransformation()
 {
 	BoundingBox box = getBoundingBox(matrix->getTransformationMatrix()); // first calculate a bounding box for the image (apply transform(forward mapped, not inverse) to the 4 squares).
-	imageWidth = box.getWidth();
-	imageHeight = box.getHeight();
 
-	static const float arr[] = { 1, 0, -box.minX, 0, 1, box.minY, 0, 0, 1}; // translate the bounding box 
-	std::vector<float> translationMatrixData (arr, arr + sizeof(arr) / sizeof(arr[0]) );
-	TransformationMatrix translationMatrix = TransformationMatrix(translationMatrixData); //create new matrix to use in translation
+	if(box.getWidth() != imageWidth || box.getHeight() != imageHeight)
+	{
+		imageWidth = box.getWidth();
+		imageHeight = box.getHeight();
 
-	matrix->addTransformationMatrix(translationMatrix); // multiply matrices
+		float arr[] = { 1, 0, -box.minX, 0, 1, -box.minY, 0, 0, 1}; // translate the bounding box 
+		std::vector<float> translationMatrixData (arr, arr + sizeof(arr) / sizeof(arr[0]) );
+		TransformationMatrix translationMatrix = TransformationMatrix(translationMatrixData); //create new matrix to use in translation
 
-	std::vector<float> inverseTransformationMatrix = matrix->getInverseTransformationMatrix(); // take matrix for use in backward mapping
+		matrix->addTransformationMatrix(translationMatrix); // multiply matrices
+	}
+	std::vector<float> transformationMatrix = matrix->getInverseTransformationMatrix(); // take matrix for use in backward mapping
 
-	Image resultImage = Image(imageWidth, imageHeight, imagePtr->getFileName());		
+	//Image resultImage = Image(imageWidth, imageHeight, imagePtr->getFileName());		
+	
 	Pixel* colorData = new Pixel[imageWidth * imageHeight];
 
 	//std::vector<Pixel> colorData = std::vector<Pixel>(imageWidth * imageHeight, Pixel(0,0,0,0)); // initialize empty image.
@@ -43,8 +51,8 @@ Image AffineTransform::doTransformation()
 		for (int y = 0; y < imageHeight; y++) {
 
 			//maps the source backwards(thru inverse matrix)
-			float sourceX = (inverseTransformationMatrix[0] * x) + (inverseTransformationMatrix[1] * y) + inverseTransformationMatrix[2];
-			float sourceY = (inverseTransformationMatrix[3] * x) + (inverseTransformationMatrix[4] * y) + inverseTransformationMatrix[5];
+			float sourceX = (transformationMatrix[0] * x) + (transformationMatrix[1] * y) + transformationMatrix[2];
+			float sourceY = (transformationMatrix[3] * x) + (transformationMatrix[4] * y) + transformationMatrix[5];
 
 			//std::cout << "Translated the new (x, y) : (" << x << ", " << y << ") to source (x, y) : (" << sourceX << ", " << sourceY << ")" << std::endl;
 
@@ -56,8 +64,9 @@ Image AffineTransform::doTransformation()
 			}
 		}
 	}
-	resultImage.setImagePixelData(colorData);
-	return resultImage;
+	//resultImage.setImagePixelData(colorData);
+	delete [] colorData;
+	return *imagePtr;// resultImage;
 }
 
 //Microsoft doesnt provide the C++11 defined math functions. ffs.

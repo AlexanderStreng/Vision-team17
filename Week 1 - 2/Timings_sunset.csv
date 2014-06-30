@@ -1,0 +1,10 @@
+Add_salt_pepper_noise;5077
+Copy_originalImage;2607
+Did_maxFilter;7233
+Did_medianFilter;769414
+Did_minFilter;7525
+Load_Image;10940
+Save_medianImage;30052
+Save_minImage;26647
+Save_sMaxImage;24483
+Save_saltAndPepperImage;30304

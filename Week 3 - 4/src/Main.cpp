@@ -14,10 +14,10 @@ std::stringstream ss;
 BaseTimer* bt;
 int means = 0;
 
-bool exerciseRoutine();
 void KmeansRoutine(int means);
-void tresholdRoutine();
-void stop(std::string msg);
+void TresholdRoutine();
+void MeasurementsRoutine1();
+void MeasurementsRoutine2();
 
 int main(int argc, char* argv[])
 {
@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
 			break;
 		case '2':
 			std::cout << "You have chosen to run the automatic tresholding algorithm!" << std::endl;
-			tresholdRoutine();
+			TresholdRoutine();
 			std::cout << std::endl << std::endl; //Make the output a bit more readable.
 			break;
 		case '0':
@@ -108,7 +108,7 @@ void KmeansRoutine(int means)
 	bt->stop();	bt->store("Save_Kmeans");
 }
 
-void tresholdRoutine()
+void TresholdRoutine()
 {
 	//prepare image
 	bt->reset(); bt->start();
@@ -135,4 +135,89 @@ void tresholdRoutine()
 	bt->reset(); bt->start();
 	thresholdImage.saveToFile(ss.str(), GRAYSCALE); //we want to save the graybytes
 	bt->stop();	bt->store("Save_Treshold");
+}
+
+//Meetrapport routines
+void MeasurementsRoutine1()  //kmeans meetrapport
+{
+	bt = new BaseTimer();
+	Image detailImage = Image("kmeans-detail.jpg");
+	Image nodetailImage = Image("kmeans-nodetail.jpg");
+
+	int maxMeans = sqrt((detailImage.getHeight() * detailImage.getWidth() / 2)); //sqrt(n/2) (en floor(x) -> door int)
+
+	std::cout << "Doing " << maxMeans << " total" << std::endl;
+
+	for(int i = 0; i < maxMeans; i++)
+	{
+
+		// provide scope, just to be sure dtors are called
+		{ 
+			bt->reset(); bt->start();
+			Image kmeansdetail = Image(detailImage);
+			Image kmeansnodetail = Image(nodetailImage);
+
+			//do means routine
+			Kmeans kmeansDetailSegmentation = Kmeans(i, FULLCOLOUR, &kmeansdetail);
+			Kmeans kmeansNoDetailSegmentation = Kmeans(i, FULLCOLOUR, &kmeansnodetail);
+
+			int amountOfDetailIterations = kmeansDetailSegmentation.doMeans();
+			int amountOfNoDetailIterations = kmeansNoDetailSegmentation.doMeans();
+
+			ss.str("");
+			ss << "kmeans-detail-iterations_" << amountOfDetailIterations << "_means_" << i << ".png"; // save as png
+			kmeansdetail.saveToFile(ss.str(), FULLCOLOUR);
+
+			ss.str("");
+			ss << "kmeans-nodetail-iterations_" << amountOfNoDetailIterations << "_means_" << i << ".png"; // save as png
+			kmeansnodetail.saveToFile(ss.str(), FULLCOLOUR);
+
+			ss.str("");
+			ss << "iteration_" << i;
+			bt->stop();	bt->store(ss.str());
+
+			std::cout << "Did iteration " << i << " in " << bt->elapsedMilliSeconds() << std::endl;
+		}
+
+	}
+	ss.str("");
+	ss << "Kmeans_timings.csv"; // save as png
+	bt->save(ss.str());
+}
+//Meetrapport routines
+void MeasurementsRoutine2() // treshold meetrapport
+{
+	bt = new BaseTimer();
+	Image tresholdOriginalImage = Image("treshold-dice.jpg");
+
+	for(int i = 0; i <= 100; i++) //we want from 0 - 100
+	{
+		if(i % 5 == 0)
+		{
+			{
+				bt->reset(); bt->start();
+				Image tresholdImage = Image(tresholdOriginalImage);
+				tresholdImage.addNoise(i, SALTANDPEPPER);
+
+				//do means routine
+				Treshold treshold = Treshold(&tresholdImage);
+				int determinedTreshold = treshold.determineTreshHold();
+				treshold.doTreshHold(determinedTreshold);
+
+				ss.str("");
+				ss << "treshold_amountnoise_" << i << ".png"; // save as png
+
+				tresholdImage.saveToFile(ss.str(), GRAYSCALE); //we want to save the graybytes
+				
+				ss.str("");
+				ss << "treshold_amountnoise:" << i; // save as png
+				bt->stop(); bt->store(ss.str());
+
+				std::cout << "Did noise amount " << i << " in " << bt->elapsedMilliSeconds() << std::endl;
+			}
+		}
+	}	
+	ss.str("");
+	ss << "treshold_timings.csv"; // save as png
+	bt->save(ss.str());
 }

@@ -17,6 +17,8 @@ void grayScaleRoutine(); //Preventing clutter in main function
 void colorRoutine();
 void invertRoutine();
 void FilterRoutine();
+void MeasurementsRoutine1();
+void MeasurementsRoutine2();
 
 int main(int argc, char* argv[])
 {
@@ -316,5 +318,155 @@ void FilterRoutine()
 		MaxImage.saveToFile(ss.str(), GRAYSCALE);
 		bt->stop();	bt->store("Save_sMaxImage");
 		std::cout<< "Saving max filtered image succeeded. \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
+	}
+}
+
+//Meetrapport routines
+void MeasurementsRoutine1() //filter volgorde
+{
+	bt = new BaseTimer();
+	Image originalImage = Image("cat-filters.jpg");
+
+	bt->reset(); bt->start();
+	Image minMaxMedian = Image(originalImage);
+	minMaxMedian.addNoise(5, SALTANDPEPPER);
+	Filter minMaxMedianFilter1 = Filter(&minMaxMedian, 3, GRAYSCALE);
+	minMaxMedianFilter1.ApplyFilter(MIN, 1);
+	Filter minMaxMedianFilter2 = Filter(&minMaxMedian, 3, GRAYSCALE);
+	minMaxMedianFilter2.ApplyFilter(MAX, 1);
+	Filter minMaxMedianFilter3 = Filter(&minMaxMedian, 3, GRAYSCALE);
+	minMaxMedianFilter3.ApplyFilter(MEDIAN, 1);
+	ss.str("");
+	ss << "minMaxMedian-distance-to-original_" << originalImage.compareToImage(&minMaxMedian, GRAYSCALE) << "%.png"; // save as png
+	minMaxMedian.saveToFile(ss.str(), GRAYSCALE);
+	bt->stop();	bt->store("minMaxMedian");
+	std::cout<< "Done minMaxMedian \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
+
+	bt->reset(); bt->start();
+	Image minMedianMax = Image(originalImage);
+	minMedianMax.addNoise(5, SALTANDPEPPER);
+	Filter minMedianMaxFilter1 = Filter(&minMedianMax, 3, GRAYSCALE);
+	minMedianMaxFilter1.ApplyFilter(MIN, 1);
+	Filter minMedianMaxFilter2 = Filter(&minMedianMax, 3, GRAYSCALE);
+	minMedianMaxFilter2.ApplyFilter(MEDIAN, 1);
+	Filter minMedianMaxFilter3 = Filter(&minMedianMax, 3, GRAYSCALE);
+	minMedianMaxFilter3.ApplyFilter(MAX, 1);
+	ss.str("");
+	ss << "minMedianMax-distance-to-original_" << originalImage.compareToImage(&minMedianMax, GRAYSCALE) << "%.png"; // save as png
+	minMedianMax.saveToFile(ss.str(), GRAYSCALE);
+	bt->stop();	bt->store("minMedianMax");
+	std::cout<< "Done minMedianMax \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
+
+	bt->reset(); bt->start();
+	Image maxMinMedian = Image(originalImage);
+	maxMinMedian.addNoise(5, SALTANDPEPPER);
+	Filter maxMinMedianFilter1 = Filter(&maxMinMedian, 3, GRAYSCALE);
+	maxMinMedianFilter1.ApplyFilter(MAX, 1);
+	Filter maxMinMedianFilter2 = Filter(&maxMinMedian, 3, GRAYSCALE);
+	maxMinMedianFilter2.ApplyFilter(MIN, 1);
+	Filter maxMinMedianFilter3 = Filter(&maxMinMedian, 3, GRAYSCALE);
+	maxMinMedianFilter3.ApplyFilter(MEDIAN, 1);
+	ss.str("");
+	ss << "maxMinMedian-distance-to-original_" << originalImage.compareToImage(&maxMinMedian, GRAYSCALE) << "%.png"; // save as png
+	maxMinMedian.saveToFile(ss.str(), GRAYSCALE);
+	bt->stop();	bt->store("maxMinMedian");
+	std::cout<< "Done maxMinMedian \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
+
+	bt->reset(); bt->start();
+	Image maxMedianMin = Image(originalImage);
+	maxMedianMin.addNoise(5, SALTANDPEPPER);
+	Filter maxMedianMinFilter1 = Filter(&maxMedianMin, 3, GRAYSCALE);
+	maxMedianMinFilter1.ApplyFilter(MAX, 1);
+	Filter maxMedianMinFilter2 = Filter(&maxMedianMin, 3, GRAYSCALE);
+	maxMedianMinFilter2.ApplyFilter(MEDIAN, 1);
+	Filter maxMedianMinFilter3 = Filter(&maxMedianMin, 3, GRAYSCALE);
+	maxMedianMinFilter3.ApplyFilter(MIN, 1);
+	ss.str("");
+	ss << "maxMedianMin-distance-to-original_" << originalImage.compareToImage(&maxMedianMin, GRAYSCALE) << "%.png"; // save as png
+	maxMedianMin.saveToFile(ss.str(), GRAYSCALE);
+	bt->stop();	bt->store("maxMedianMin");
+	std::cout<< "Done maxMedianMin \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
+
+	bt->reset(); bt->start();
+	Image medianMaxMin = Image(originalImage);
+	medianMaxMin.addNoise(5, SALTANDPEPPER);
+	Filter medianMaxMinFilter1 = Filter(&medianMaxMin, 3, GRAYSCALE);
+	medianMaxMinFilter1.ApplyFilter(MEDIAN, 1);
+	Filter medianMaxMinFilter2 = Filter(&medianMaxMin, 3, GRAYSCALE);
+	medianMaxMinFilter2.ApplyFilter(MAX, 1);
+	Filter medianMaxMinFilter3 = Filter(&medianMaxMin, 3, GRAYSCALE);
+	medianMaxMinFilter3.ApplyFilter(MIN, 1);
+	ss.str("");
+	ss << "medianMaxMin-distance-to-original_" << originalImage.compareToImage(&medianMaxMin, GRAYSCALE) << "%.png"; // save as png
+	medianMaxMin.saveToFile(ss.str(), GRAYSCALE);
+	bt->stop();	bt->store("medianMaxMin");
+	std::cout<< "Done medianMaxMin \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
+
+	bt->reset(); bt->start();
+	Image medianMinMax = Image(originalImage);
+	medianMinMax.addNoise(5, SALTANDPEPPER);
+	Filter medianMinMaxFilter1 = Filter(&medianMinMax, 3, GRAYSCALE);
+	medianMinMaxFilter1.ApplyFilter(MEDIAN, 1);
+	Filter medianMinMaxFilter2 = Filter(&medianMinMax, 3, GRAYSCALE);
+	medianMinMaxFilter2.ApplyFilter(MIN, 1);
+	Filter medianMinMaxFilter3 = Filter(&medianMinMax, 3, GRAYSCALE);
+	medianMinMaxFilter3.ApplyFilter(MAX, 1);
+	ss.str("");
+	ss << "medianMinMax-distance-to-original_" << originalImage.compareToImage(&medianMinMax, GRAYSCALE) << "%.png"; // save as png
+	medianMinMax.saveToFile(ss.str(), GRAYSCALE);
+	bt->stop();	bt->store("medianMinMax");
+	std::cout<< "Done medianMinMax \t(in " << bt->elapsedMilliSeconds() << " milliseconds)" << std::endl;
+
+	ss.str("");
+	ss << "filterOrder_timings.csv"; // save as png
+	bt->save(ss.str());
+}
+
+//Meetrapport routines
+void MeasurementsRoutine2() //histogram equalisation
+{
+	{
+		Image normalCatImage = Image("normal-cat.jpg");
+		Histogram normalHistogram = Histogram(256, GRAYSCALE, &normalCatImage);
+		normalHistogram.EqualizeImage();
+		ss.str(""); ss << "equalized_normal.png";
+		normalCatImage.saveToFile(ss.str(), GRAYSCALE);
+
+		Image normalNoiseCatImage = Image("normal-cat.jpg");
+		normalNoiseCatImage.addNoise(20, SALTANDPEPPER);
+		Histogram normalNoiseHistogram = Histogram(256, GRAYSCALE, &normalNoiseCatImage);
+		normalNoiseHistogram.EqualizeImage();
+		ss.str(""); ss << "equalized_normal_noise_diff;" << normalNoiseCatImage.compareToImage(&normalCatImage, GRAYSCALE) << "%.png";
+		normalNoiseCatImage.saveToFile(ss.str(), GRAYSCALE);
+	}
+
+	{
+		Image overexposedCatImage = Image("overexposed-cat.jpg");
+		Histogram overHistogram = Histogram(256, GRAYSCALE, &overexposedCatImage);
+		overHistogram.EqualizeImage();
+		ss.str(""); ss << "equalized_over.png";
+		overexposedCatImage.saveToFile(ss.str(), GRAYSCALE);
+
+		Image overexposedNoiseCatImage = Image("overexposed-cat.jpg");
+		overexposedNoiseCatImage.addNoise(20, SALTANDPEPPER);
+		Histogram overNoiseHistogram = Histogram(256, GRAYSCALE, &overexposedNoiseCatImage);
+		overNoiseHistogram.EqualizeImage();
+		ss.str(""); ss << "equalized_over_noise_diff;" << overexposedNoiseCatImage.compareToImage(&overexposedCatImage, GRAYSCALE) << "%.png";
+		overexposedNoiseCatImage.saveToFile(ss.str(), GRAYSCALE);
+	}
+
+	{
+		Image underexposedCatImage = Image("underexposed-cat.jpg");
+		Histogram underHistogram = Histogram(256, GRAYSCALE, &underexposedCatImage);
+		underHistogram.EqualizeImage();
+		ss.str(""); ss << "equalized_under.png";
+		underexposedCatImage.saveToFile(ss.str(), GRAYSCALE);
+
+		Image underexposedNoiseCatImage = Image("underexposed-cat.jpg");
+		underexposedNoiseCatImage.addNoise(20, SALTANDPEPPER);
+		Histogram underNoiseHistogram = Histogram(256, GRAYSCALE, &underexposedNoiseCatImage);
+		underNoiseHistogram.EqualizeImage();
+		ss.str(""); ss << "equalized_under_noise_diff;" << underexposedNoiseCatImage.compareToImage(&underexposedCatImage, GRAYSCALE) << "%.png";
+		underexposedNoiseCatImage.saveToFile(ss.str(), GRAYSCALE);
 	}
 }

@@ -18,6 +18,8 @@ BaseTimer* bt;
 bool exerciseRoutine();
 void affineTransformRoutine();
 void stop(std::string msg);
+void MeasurementsRoutine1();
+void MeasurementsRoutine2();
 
 int main(int argc, char* argv[])
 {
@@ -52,7 +54,7 @@ int main(int argc, char* argv[])
 		matrixFile = argv[2];
 		interpolationType = atoi(argv[3]);
 	}
-	interpolationType != 1 ? interpolationTypeEnum = ZERO_ORDER : FIRST_ORDER;
+	interpolationTypeEnum = interpolationType != 1 ? ZERO_ORDER : FIRST_ORDER;
 	while(getchar()!='\n'); // clear input buffer to prevent from a screen showing twice.
 	std::cout << "I am going to use the file: '" << filename << "' with the matrix: " << matrixFile << " and interpolationType: " << interpolationType << "-order" << std::endl;
 
@@ -105,8 +107,7 @@ void affineTransformRoutine(){
 
 	bt->reset(); bt->start();	
 	//do transformation
-	AffineTransform transform = AffineTransform(FULLCOLOUR, &sourceImage, &transformMatrix);
-	transform.setInterpolationMethod(interpolationTypeEnum);
+	AffineTransform transform = AffineTransform(FULLCOLOUR, &sourceImage, &transformMatrix, interpolationTypeEnum);
 	Image transformedImage = transform.doTransformation();
 	bt->stop(); bt->store("Do_Transform");
 
@@ -118,4 +119,120 @@ void affineTransformRoutine(){
 	bt->reset(); bt->start();
 	transformedImage.saveToFile(ss.str(), FULLCOLOUR);
 	bt->stop();	bt->store("Save_transformed");
+}
+
+//Meetrapport routines
+void MeasurementsRoutine1() //filter volgorde
+{
+	bt = new BaseTimer();
+	Image originalImage = Image("cat-transforms.jpg");
+	{
+		TransformationMatrix rotateMatrix = TransformationMatrix("rotate-meetrapport.txt");
+		AffineTransform rotateZeroOrder = AffineTransform(FULLCOLOUR, &originalImage, &rotateMatrix, ZERO_ORDER);
+		Image transformedrotateZeroOrderImage = rotateZeroOrder.doTransformation();
+		ss.str(""); ss << "rotate - 0.png"; // save as png
+		transformedrotateZeroOrderImage.saveToFile(ss.str(), FULLCOLOUR);
+
+		rotateMatrix = TransformationMatrix("rotate-meetrapport.txt");
+		AffineTransform rotateFirstOrder = AffineTransform(FULLCOLOUR, &originalImage, &rotateMatrix, FIRST_ORDER);
+		Image transformedrotateFirstOrderImage = rotateFirstOrder.doTransformation();
+		ss.str(""); ss << "rotate - 1 - diff - " << transformedrotateZeroOrderImage.compareToImage(&transformedrotateFirstOrderImage, FULLCOLOUR) << "%.png"; // save as png
+		transformedrotateFirstOrderImage.saveToFile(ss.str(), FULLCOLOUR);
+
+		std::cout << "Done Rotate" << std::endl;
+	}
+
+	{
+		TransformationMatrix scaleMatrix = TransformationMatrix("scale-meetrapport.txt");
+		AffineTransform scaleZeroOrder = AffineTransform(FULLCOLOUR, &originalImage, &scaleMatrix, ZERO_ORDER);
+		Image transformedscaleZeroOrderImage = scaleZeroOrder.doTransformation();
+		ss.str(""); ss << "scale - 0.png"; // save as png
+		transformedscaleZeroOrderImage.saveToFile(ss.str(), FULLCOLOUR);
+
+		scaleMatrix = TransformationMatrix("scale-meetrapport.txt");
+		AffineTransform scaleFirstOrder = AffineTransform(FULLCOLOUR, &originalImage, &scaleMatrix, FIRST_ORDER);
+		Image transformedscaleFirstOrderImage = scaleFirstOrder.doTransformation();
+		ss.str(""); ss << "scale - 1 - diff - " << transformedscaleZeroOrderImage.compareToImage(&transformedscaleFirstOrderImage, FULLCOLOUR) << "%.png"; // save as png
+		transformedscaleFirstOrderImage.saveToFile(ss.str(), FULLCOLOUR);
+
+		std::cout << "Done scale" << std::endl;
+	}
+
+	{
+		TransformationMatrix shearMatrix = TransformationMatrix("shear-meetrapport.txt");
+		AffineTransform shearZeroOrder = AffineTransform(FULLCOLOUR, &originalImage, &shearMatrix, ZERO_ORDER);
+		Image transformedshearZeroOrderImage = shearZeroOrder.doTransformation();
+		ss.str(""); ss << "shear - 0.png"; // save as png
+		transformedshearZeroOrderImage.saveToFile(ss.str(), FULLCOLOUR);
+
+		shearMatrix = TransformationMatrix("shear-meetrapport.txt");
+		AffineTransform shearFirstOrder = AffineTransform(FULLCOLOUR, &originalImage, &shearMatrix, FIRST_ORDER);
+		Image transformedshearFirstOrderImage = shearFirstOrder.doTransformation();
+		ss.str(""); ss << "shear - 1 - diff - " << transformedshearZeroOrderImage.compareToImage(&transformedshearFirstOrderImage, FULLCOLOUR) << "%.png"; // save as png
+		transformedshearFirstOrderImage.saveToFile(ss.str(), FULLCOLOUR);
+
+		std::cout << "Done shear" << std::endl;
+	}
+
+}
+//Meetrapport routines
+void MeasurementsRoutine2() //histogram equalisation
+{
+	bt = new BaseTimer();
+	Image originalImage = Image("cat-transforms.jpg");
+
+	for(int i = 0; i < 100; i++)
+	{
+		{
+			TransformationMatrix rotateMatrix = TransformationMatrix("rotate-meetrapport.txt");
+			AffineTransform rotateZeroOrder = AffineTransform(FULLCOLOUR, &originalImage, &rotateMatrix, ZERO_ORDER);
+			ss.str(""); ss << "rotate0 - iteration-" << ((i < 10) ? "0" : "") << i;
+			bt->reset(); bt->start();	
+			Image transformedrotateZeroOrderImage = rotateZeroOrder.doTransformation();
+			bt->stop();	bt->store(ss.str());
+
+			rotateMatrix = TransformationMatrix("rotate-meetrapport.txt");
+			AffineTransform rotateFirstOrder = AffineTransform(FULLCOLOUR, &originalImage, &rotateMatrix, FIRST_ORDER);
+			ss.str(""); ss << "rotate1 - iteration-" << ((i < 10) ? "0" : "") << i;
+			bt->reset(); bt->start();	
+			Image transformedrotateFirstOrderImage = rotateFirstOrder.doTransformation();
+			bt->stop();	bt->store(ss.str());
+		}
+
+		{
+			TransformationMatrix scaleMatrix = TransformationMatrix("scale-meetrapport.txt");
+			AffineTransform scaleZeroOrder = AffineTransform(FULLCOLOUR, &originalImage, &scaleMatrix, ZERO_ORDER);
+			ss.str(""); ss << "scale0 - iteration-" << ((i < 10) ? "0" : "") << i;
+			bt->reset(); bt->start();	
+			Image transformedscaleZeroOrderImage = scaleZeroOrder.doTransformation();
+			bt->stop();	bt->store(ss.str());
+
+			scaleMatrix = TransformationMatrix("scale-meetrapport.txt");
+			AffineTransform scaleFirstOrder = AffineTransform(FULLCOLOUR, &originalImage, &scaleMatrix, FIRST_ORDER);
+			ss.str(""); ss << "scale1 - iteration-" << ((i < 10) ? "0" : "") << i;
+			bt->reset(); bt->start();	
+			Image transformedscaleFirstOrderImage = scaleFirstOrder.doTransformation();
+			bt->stop();	bt->store(ss.str());
+		}
+
+		{
+			TransformationMatrix shearMatrix = TransformationMatrix("shear-meetrapport.txt");
+			AffineTransform shearZeroOrder = AffineTransform(FULLCOLOUR, &originalImage, &shearMatrix, ZERO_ORDER);
+			ss.str(""); ss << "shear0 - iteration-" << ((i < 10) ? "0" : "") << i;
+			bt->reset(); bt->start();	
+			Image transformedshearZeroOrderImage = shearZeroOrder.doTransformation();
+			bt->stop();	bt->store(ss.str());
+
+			shearMatrix = TransformationMatrix("shear-meetrapport.txt");
+			AffineTransform shearFirstOrder = AffineTransform(FULLCOLOUR, &originalImage, &shearMatrix, FIRST_ORDER);
+			ss.str(""); ss << "shear1 - iteration-" << ((i < 10) ? "0" : "") << i;
+			bt->reset(); bt->start();	
+			Image transformedshearFirstOrderImage = shearFirstOrder.doTransformation();
+			bt->stop();	bt->store(ss.str());
+		}
+		std::cout << "Done " << i << " iterations." << std::endl;
+	}
+	ss.str("");
+	ss << "afinneperformance.csv"; // save as png
+	bt->save(ss.str());
 }

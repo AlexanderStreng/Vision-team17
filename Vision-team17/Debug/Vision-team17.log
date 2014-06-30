@@ -1,0 +1,19 @@
+﻿Build started 6/30/2014 11:42:54 PM.
+     1>Project "F:\Projects\School\Vision-team17\Vision-team17\Vision-team17.vcxproj" on node 5 (Rebuild target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V110\Microsoft.CppBuild.targets(346,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I.\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt src\Image.cpp
+         Image.cpp
+     1>f:\projects\school\vision-team17\vision-team17\src\image.cpp(274): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>f:\projects\school\vision-team17\vision-team17\src\image.cpp(345): warning C4800: 'corona::Image *' : forcing value to bool 'true' or 'false' (performance warning)
+     1>f:\projects\school\vision-team17\vision-team17\src\image.cpp(385): warning C4996: '_splitpath': This function or variable may be unsafe. Consider using _splitpath_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdlib.h(824) : see declaration of '_splitpath'
+     1>f:\projects\school\vision-team17\vision-team17\src\image.cpp(371): warning C4715: 'Image::getImageData' : not all control paths return a value
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\Lib.exe /OUT:".\lib\Vision-team17.lib" corona.lib /LIBPATH:.\lib /NOLOGO Debug\Image.obj
+         Vision-team17.vcxproj -> F:\Projects\School\Vision-team17\Vision-team17\.\lib\Vision-team17.lib
+     1>Done Building Project "F:\Projects\School\Vision-team17\Vision-team17\Vision-team17.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.50

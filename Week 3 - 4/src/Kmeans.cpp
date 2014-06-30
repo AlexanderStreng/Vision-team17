@@ -44,12 +44,13 @@ int Kmeans::doMeans(){
 		for (int i = 0; i < imageWidth * imageHeight; i++) {
 			Pixel * p = &imageData[i];
 
-			int smallestDist = INT_MAX, closestMeanIndex = 0, red = (int)p->r, green = (int)p->g, blue = (int)p->b;
+			double smallestDist = INT_MAX; 
+			int closestMeanIndex = 0, red = (int)p->r, green = (int)p->g, blue = (int)p->b;
 
 			//this might actually work multi-threaded
 			for(int j = 0; j < amountOfMeans; j++) {
 				int kRed = (int)meansArray[j].centerPixel.r, kGreen = (int)meansArray[j].centerPixel.g, kBlue = (int)meansArray[j].centerPixel.b;
-				int distance = sqrt(pow((kRed - red), 2) + pow((kGreen - green), 2) + pow((kBlue - blue), 2)); 
+				double distance = sqrt(pow((kRed - red), 2) + pow((kGreen - green), 2) + pow((kBlue - blue), 2)); 
 				//determine closest mean
 				if(distance < smallestDist) {
 					smallestDist = distance;
@@ -74,7 +75,6 @@ int Kmeans::doMeans(){
 				}
 				meansArray[i].lastCenterPixel = meansArray[i].centerPixel;
 				meansArray[i].centerPixel = Pixel((byte)(sumR / assignedPixelSize), (byte)(sumG / assignedPixelSize), (byte)(sumB / assignedPixelSize), (byte)0);
-
 			} else {
 				meansArray[i].lastCenterPixel = meansArray[i].centerPixel; // still need a last centerpixel
 			}

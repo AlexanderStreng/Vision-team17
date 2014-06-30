@@ -51,10 +51,10 @@ Image::Image(std::string filename) :
 	{
 		inputImage = corona::OpenImage(filename.c_str(), corona::PF_R8G8B8); //Open the image using Corona lib
 	}
-    catch (const std::exception& e) 
+	catch (const std::exception& e) 
 	{
-        std::cout << e.what() << '\n';
-    }
+		std::cout << e.what() << '\n';
+	}
 
 	imageWidth  = inputImage->getWidth();
 	imageHeight = inputImage->getHeight();
@@ -110,8 +110,11 @@ Image::Image(int width, int height, std::string fileName) :
 
 Image::~Image()
 {
-	//delete [] imageData;
-	//delete buffers? free up memory?
+	delete [] colorData;
+	delete [] blueData;
+	delete [] greenData;
+	delete [] redData;
+	delete [] grayData;
 }
 
 void Image::setImagePixelData(Pixel* imageData)
@@ -286,6 +289,57 @@ int Image::addNoise(int amount, noiseTypeEnum noise){ // amount in % // Gaussian
 	return bitsFlipped;
 }
 
+double Image::compareToImage(Image* otherImage, ColorEnum color)
+{
+	if(otherImage->getHeight() != imageHeight ||
+		otherImage->getWidth() != imageWidth) {
+			return -1;
+	}
+
+	int imageSize = imageWidth * imageHeight;
+	double currentDistance = 0;
+	double totaldiff = 0.0 ; //holds the number of different pixels
+
+	switch(color)
+	{
+	case FULLCOLOUR:
+		{
+			Pixel* otherColorData = otherImage->getImagePixelData();
+			for (int i = 0; i < imageSize; ++i) 
+			{
+				int red = (int)colorData[i].r, green = (int)colorData[i].g, blue = (int)colorData[i].b;
+				int otherRed = (int)otherColorData[i].r, otherGreen = (int)otherColorData[i].g, otherBlue = (int)otherColorData[i].b;
+
+				totaldiff += std::abs(otherRed-red) / 255.0 ;
+				totaldiff += std::abs(otherGreen-green) / 255.0 ;
+				totaldiff += std::abs(otherBlue-blue) / 255.0 ;
+
+				double distance = sqrt(pow((otherRed - red), 2) + pow((otherGreen - green), 2) + pow((otherBlue - blue), 2)); 
+				currentDistance += distance;
+			}
+			return (totaldiff * 100)  / (imageSize * 3);
+		}
+		break;
+	case GRAYSCALE:
+		{
+			byte* otherGrayData = otherImage->getImageData(GRAYSCALE);
+			for (int i = 0; i < imageSize; ++i) 
+			{
+				int gray = (int)grayData[i];
+				int otherGray = (int)otherGrayData[i];
+
+				totaldiff += std::abs( gray - otherGray ) / 255.0 ;
+
+				double distance = sqrt(pow((otherGray - gray), 2)); 
+				currentDistance += distance;
+			}
+			return (totaldiff * 100)  / imageSize;
+		}
+		break;
+	}
+	return (currentDistance / imageSize);
+}
+
 bool Image::Exists()
 {
 	return inputImage;
@@ -330,7 +384,7 @@ std::string Image::getFileNameWithoutExtension()
 	char splitted_filename[50]; // max file name;
 	_splitpath(filename.c_str(), NULL, NULL, splitted_filename, NULL);
 	std::string str(splitted_filename);
-	delete [] splitted_filename; // cleanup;
+	//delete [] splitted_filename; // cleanup;
 	return str;
 }
 

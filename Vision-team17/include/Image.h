@@ -30,6 +30,7 @@ public:
 	void Image::setImageData(ColorEnum color, byte* imageData);
 	Pixel* getImagePixelData();
 	void Image::setImagePixelData(Pixel* imageData);
+	double Image::compareToImage(Image* otherImage, ColorEnum color);
 private:
 	int imageWidth;
 	int imageHeight;

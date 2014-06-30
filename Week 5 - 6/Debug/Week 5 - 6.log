@@ -1,0 +1,34 @@
+﻿Build started 6/30/2014 11:42:54 PM.
+     1>Project "F:\Projects\School\Vision-team17\Week 5 - 6\Week 5 - 6.vcxproj" on node 4 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I".\timer files" /I.\include /I"..\Vision-team17\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt src\AffineTransform.cpp src\Main.cpp src\TransformationMatrix.cpp "timer files\basetimer.cpp" "timer files\exectimer.cpp"
+         exectimer.cpp
+         basetimer.cpp
+         TransformationMatrix.cpp
+         Main.cpp
+     1>f:\projects\school\vision-team17\week 5 - 6\src\main.cpp(76): warning C4101: 'newMeans' : unreferenced local variable
+         AffineTransform.cpp
+     1>f:\projects\school\vision-team17\week 5 - 6\src\affinetransform.cpp(36): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>f:\projects\school\vision-team17\week 5 - 6\src\affinetransform.cpp(75): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
+     1>f:\projects\school\vision-team17\week 5 - 6\src\affinetransform.cpp(104): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>f:\projects\school\vision-team17\week 5 - 6\src\affinetransform.cpp(105): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>f:\projects\school\vision-team17\week 5 - 6\src\affinetransform.cpp(106): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>f:\projects\school\vision-team17\week 5 - 6\src\affinetransform.cpp(107): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>f:\projects\school\vision-team17\week 5 - 6\src\affinetransform.cpp(140): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>f:\projects\school\vision-team17\week 5 - 6\src\affinetransform.cpp(141): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>f:\projects\school\vision-team17\week 5 - 6\src\affinetransform.cpp(142): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>f:\projects\school\vision-team17\week 5 - 6\src\affinetransform.cpp(143): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+         Generating Code...
+     1>f:\projects\school\vision-team17\week 5 - 6\src\affinetransform.cpp(120): warning C4715: 'AffineTransform::interpolate' : not all control paths return a value
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\Projects\School\Vision-team17\Debug\Week 5 - 6.exe" /INCREMENTAL /NOLOGO /LIBPATH:"..\Vision-team17\lib" "Vision-team17.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:\Projects\School\Vision-team17\Debug\Week 5 - 6.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:\Projects\School\Vision-team17\Debug\Week 5 - 6.lib" /MACHINE:X86 Debug\AffineTransform.obj
+         Debug\Main.obj
+         Debug\TransformationMatrix.obj
+         Debug\basetimer.obj
+         Debug\exectimer.obj
+         Week 5 - 6.vcxproj -> F:\Projects\School\Vision-team17\Debug\Week 5 - 6.exe
+     1>Done Building Project "F:\Projects\School\Vision-team17\Week 5 - 6\Week 5 - 6.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:05.91
